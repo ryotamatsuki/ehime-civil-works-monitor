@@ -55,3 +55,26 @@ Future additions should continue cohort-by-cohort. Before a past project enters 
 - approximate or official geometry provenance.
 
 An empty history is preferable to a false longitudinal series.
+
+
+## FY2024 cohort completion
+
+The FY2024 (令和6年度) re-evaluation cohort is now complete: all 13 projects considered by the committee are represented, including the one Matsuyama City delegated project.
+
+Newly added after the first two-project pass:
+
+- 水利施設等保全高度化事業（灘地区）
+- 水利施設等保全高度化事業（吉田地区）
+- 事業間連携砂防等事業（芹谷川）
+- 事業間連携砂防等事業（大平川）
+- 事業間連携砂防等事業（風呂の奥川）
+- 事業間連携砂防等事業（七津川）
+- 事業間連携砂防等事業（河口東地区）
+- 広域河川改修事業（内平ヶ谷川）
+- 港湾改修事業（宇和島港 大浦地区）
+- 都市計画街路事業（余戸北吉田線）
+- 地域居住機能再生推進事業（和泉周辺地区、松山市付託）
+
+The same conservative rule remains in force: a project can enter the map with a sparse current snapshot when the committee confirms its identity and continuation, while longitudinal history is added only where evaluation dates and definitions are comparable. In particular, the Matsuyama delegated project is included with the B/C and context available in the official committee minutes, while unverified cost/schedule/progress values remain null.
+
+This expansion also introduces `agriculture` and `port` as first-class map categories.
