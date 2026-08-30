@@ -2,7 +2,6 @@ import './enrichment.css';
 import type {
   AnnualBudgetEntry,
   BenefitCostHistoryEntry,
-  CumulativeInvestmentEntry,
   DocumentedReason,
   EnrichmentCollection,
   ProjectEnrichmentRecord,
