@@ -9,6 +9,15 @@ export interface EnrichmentStats {
   multiPeriodBenefitCostProjectCount: number;
 }
 
+export function hasEnrichmentData(record: ProjectEnrichmentRecord): boolean {
+  return (
+    record.annualBudgetHistory.length > 0 ||
+    record.cumulativeInvestmentHistory.length > 0 ||
+    record.benefitCostHistory.length > 0 ||
+    record.documentedReasons.length > 0
+  );
+}
+
 export function getEnrichmentRecord(
   enrichment: EnrichmentCollection,
   projectId: string,
@@ -19,12 +28,7 @@ export function getEnrichmentRecord(
 export function aggregateEnrichment(enrichment: EnrichmentCollection): EnrichmentStats {
   const records = enrichment.records;
   return {
-    enrichedProjectCount: records.filter((record) =>
-      record.annualBudgetHistory.length > 0 ||
-      record.cumulativeInvestmentHistory.length > 0 ||
-      record.benefitCostHistory.length > 0 ||
-      record.documentedReasons.length > 0,
-    ).length,
+    enrichedProjectCount: records.filter(hasEnrichmentData).length,
     annualBudgetProjectCount: records.filter((record) => record.annualBudgetHistory.length > 0).length,
     cumulativeInvestmentProjectCount: records.filter((record) => record.cumulativeInvestmentHistory.length > 0).length,
     benefitCostHistoryProjectCount: records.filter((record) => record.benefitCostHistory.length > 0).length,
