@@ -6,7 +6,7 @@ import type {
   EnrichmentCollection,
   ProjectEnrichmentRecord,
 } from './enrichment-types';
-import { aggregateEnrichment, getEnrichmentRecord } from './enrichment';
+import { aggregateEnrichment, getEnrichmentRecord, hasEnrichmentData } from './enrichment';
 import { formatFiscalYear, formatMillionYen, getProjectIdFromPath } from './domain';
 
 const base = import.meta.env.BASE_URL;
@@ -103,19 +103,17 @@ function renderHome(enrichment: EnrichmentCollection) {
   section.className = 'enrichment-summary';
   section.innerHTML = `
     <div class="enrichment-summary-head">
-      <div><p class="eyebrow">PHASE 2.1 · DATA DEPTH</p><h2>一次資料を、もう一段深く。</h2></div>
+      <div><p class="eyebrow">PHASE 2.1 · DATA ENRICHMENT</p><h2>一次資料を、もう一段深く。</h2></div>
       <p>年度予算・累計投資・B/C・文書化された増額／延期事情を、元資料へ戻れる形で追加しています。</p>
     </div>
     <div class="enrichment-metrics">
-      <div class="enrichment-metric"><strong>${stats.enrichedProjectCount}</strong><span>DEEP DIVE<br>深掘り済み案件</span></div>
+      <div class="enrichment-metric"><strong>${stats.enrichedProjectCount}</strong><span>ENRICHED<br>深掘り済み案件</span></div>
       <div class="enrichment-metric"><strong>${stats.annualBudgetProjectCount}</strong><span>ANNUAL BUDGET<br>年度予算確認</span></div>
       <div class="enrichment-metric"><strong>${stats.cumulativeInvestmentProjectCount}</strong><span>INVESTMENT<br>累計投資確認</span></div>
       <div class="enrichment-metric"><strong>${stats.multiPeriodBenefitCostProjectCount}</strong><span>B/C HISTORY<br>複数時点比較</span></div>
       <div class="enrichment-metric"><strong>${stats.documentedReasonProjectCount}</strong><span>REASONS<br>理由・事情確認</span></div>
     </div>`;
   changesRoot.insertAdjacentElement('afterend', section);
-  const phase = document.querySelector<HTMLElement>('.notice strong');
-  if (phase) phase.textContent = 'PHASE 2.1 / 2026-08-30';
 }
 
 function renderDetail(record: ProjectEnrichmentRecord) {
@@ -155,7 +153,7 @@ async function phase21() {
     const projectId = getProjectIdFromPath(location.pathname);
     if (projectId) {
       const record = getEnrichmentRecord(enrichment, projectId);
-      if (record) renderDetail(record);
+      if (record && hasEnrichmentData(record)) renderDetail(record);
     } else {
       renderHome(enrichment);
     }
