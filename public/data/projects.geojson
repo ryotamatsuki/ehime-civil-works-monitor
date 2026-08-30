@@ -1,1 +1,830 @@
-{"type":"FeatureCollection","name":"ehime-civil-works-monitor-mvp","features":[{"type":"Feature","id":"tachima-kuniyasu-kawachi-river","properties":{"projectId":"tachima-kuniyasu-kawachi-river","locationAccuracy":"approximate"},"geometry":{"type":"Point","coordinates":[132.536,33.282]}},{"type":"Feature","id":"narubae-coast-tsunami","properties":{"projectId":"narubae-coast-tsunami","locationAccuracy":"approximate"},"geometry":{"type":"Point","coordinates":[132.555,32.958]}},{"type":"Feature","id":"takahama-2-sabo","properties":{"projectId":"takahama-2-sabo","locationAccuracy":"approximate"},"geometry":{"type":"Point","coordinates":[132.713,33.888]}},{"type":"Feature","id":"kameyamagawa-sabo","properties":{"projectId":"kameyamagawa-sabo","locationAccuracy":"approximate"},"geometry":{"type":"Point","coordinates":[132.552,33.493]}},{"type":"Feature","id":"kobutani-sabo","properties":{"projectId":"kobutani-sabo","locationAccuracy":"approximate"},"geometry":{"type":"Point","coordinates":[132.676,33.561]}},{"type":"Feature","id":"uedani-slope","properties":{"projectId":"uedani-slope","locationAccuracy":"approximate"},"geometry":{"type":"Point","coordinates":[132.552,33.205]}},{"type":"Feature","id":"ozu-west-road","properties":{"projectId":"ozu-west-road","locationAccuracy":"approximate"},"geometry":{"type":"Point","coordinates":[132.511,33.51]}},{"type":"Feature","id":"yohiru-road","properties":{"projectId":"yohiru-road","locationAccuracy":"approximate"},"geometry":{"type":"Point","coordinates":[132.43,33.493]}},{"type":"Feature","id":"jr-matsuyama-grade-separation","properties":{"projectId":"jr-matsuyama-grade-separation","locationAccuracy":"derived"},"geometry":{"type":"Point","coordinates":[132.751,33.84]}},{"type":"Feature","id":"uchihira-river","properties":{"projectId":"uchihira-river","locationAccuracy":"approximate"},"geometry":{"type":"Point","coordinates":[132.558,33.215]}},{"type":"Feature","properties":{"projectId":"sanaki-widening"},"geometry":{"type":"Point","coordinates":[132.65,33.7]}},{"type":"Feature","properties":{"projectId":"nishimachi-nakamura-street"},"geometry":{"type":"Point","coordinates":[133.28,33.95]}},{"type":"Feature","properties":{"projectId":"nada-irrigation"},"geometry":{"type":"Point","coordinates":[132.36,33.47]}},{"type":"Feature","properties":{"projectId":"yoshida-irrigation"},"geometry":{"type":"Point","coordinates":[132.54,33.27]}},{"type":"Feature","properties":{"projectId":"seritani-sabo"},"geometry":{"type":"Point","coordinates":[133.58,33.96]}},{"type":"Feature","properties":{"projectId":"ohiragawa-sabo"},"geometry":{"type":"Point","coordinates":[132.63,33.67]}},{"type":"Feature","properties":{"projectId":"furonookugawa-sabo"},"geometry":{"type":"Point","coordinates":[132.76,33.58]}},{"type":"Feature","properties":{"projectId":"nanatsugawa-sabo"},"geometry":{"type":"Point","coordinates":[132.67,33.55]}},{"type":"Feature","properties":{"projectId":"koguchi-higashi-slope"},"geometry":{"type":"Point","coordinates":[132.91,33.66]}},{"type":"Feature","properties":{"projectId":"uchihiragatani-river"},"geometry":{"type":"Point","coordinates":[132.61,33.29]}},{"type":"Feature","properties":{"projectId":"uwajima-port-oura"},"geometry":{"type":"Point","coordinates":[132.55,33.24]}},{"type":"Feature","properties":{"projectId":"yogo-kita-yoshida-street"},"geometry":{"type":"Point","coordinates":[132.72,33.83]}},{"type":"Feature","properties":{"projectId":"izumi-housing-regeneration"},"geometry":{"type":"Point","coordinates":[132.76,33.82]}}]}
+{
+  "type": "FeatureCollection",
+  "name": "ehime-civil-works-monitor-phase22",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "tachima-kuniyasu-kawachi-river",
+      "properties": {
+        "projectId": "tachima-kuniyasu-kawachi-river",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.536,
+          33.282
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "narubae-coast-tsunami",
+      "properties": {
+        "projectId": "narubae-coast-tsunami",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.555,
+          32.958
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "takahama-2-sabo",
+      "properties": {
+        "projectId": "takahama-2-sabo",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.713,
+          33.888
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "kameyamagawa-sabo",
+      "properties": {
+        "projectId": "kameyamagawa-sabo",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.552,
+          33.493
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "kobutani-sabo",
+      "properties": {
+        "projectId": "kobutani-sabo",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.676,
+          33.561
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "uedani-slope",
+      "properties": {
+        "projectId": "uedani-slope",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.552,
+          33.205
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ozu-west-road",
+      "properties": {
+        "projectId": "ozu-west-road",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.511,
+          33.51
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "yohiru-road",
+      "properties": {
+        "projectId": "yohiru-road",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.43,
+          33.493
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "jr-matsuyama-grade-separation",
+      "properties": {
+        "projectId": "jr-matsuyama-grade-separation",
+        "locationAccuracy": "derived"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.751,
+          33.84
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "uchihira-river",
+      "properties": {
+        "projectId": "uchihira-river",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.558,
+          33.215
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "projectId": "sanaki-widening"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.65,
+          33.7
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "projectId": "nishimachi-nakamura-street"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          133.28,
+          33.95
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "projectId": "nada-irrigation"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.36,
+          33.47
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "projectId": "yoshida-irrigation"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.54,
+          33.27
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "projectId": "seritani-sabo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          133.58,
+          33.96
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "projectId": "ohiragawa-sabo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.63,
+          33.67
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "projectId": "furonookugawa-sabo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.76,
+          33.58
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "projectId": "nanatsugawa-sabo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.67,
+          33.55
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "projectId": "koguchi-higashi-slope"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.91,
+          33.66
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "projectId": "uchihiragatani-river"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.61,
+          33.29
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "projectId": "uwajima-port-oura"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.55,
+          33.24
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "projectId": "yogo-kita-yoshida-street"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.72,
+          33.83
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "projectId": "izumi-housing-regeneration"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.76,
+          33.82
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "iwagi-bridge",
+      "properties": {
+        "projectId": "iwagi-bridge",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          133.154,
+          34.253
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "toyo-port-improvement",
+      "properties": {
+        "projectId": "toyo-port-improvement",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          133.105,
+          33.949
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "imabari-road",
+      "properties": {
+        "projectId": "imabari-road",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            132.98,
+            34.07
+          ],
+          [
+            133.01,
+            34.04
+          ],
+          [
+            133.05,
+            34.0
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "mishima-kawanoe-kaneko-roro",
+      "properties": {
+        "projectId": "mishima-kawanoe-kaneko-roro",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          133.55,
+          33.97
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sakaidani-river",
+      "properties": {
+        "projectId": "sakaidani-river",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          133.17,
+          33.93
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sawazu-slope",
+      "properties": {
+        "projectId": "sawazu-slope",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          133.1,
+          34.2
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "asakawa-river",
+      "properties": {
+        "projectId": "asakawa-river",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.99,
+          34.08
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "okawa-river",
+      "properties": {
+        "projectId": "okawa-river",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.75,
+          33.9
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "matsuyama-port-improvement",
+      "properties": {
+        "projectId": "matsuyama-port-improvement",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.7,
+          33.86
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "nakanotani-sabo",
+      "properties": {
+        "projectId": "nakanotani-sabo",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.72,
+          33.72
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "matsuyama-outer-ring-airport",
+      "properties": {
+        "projectId": "matsuyama-outer-ring-airport",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            132.73,
+            33.8
+          ],
+          [
+            132.71,
+            33.81
+          ],
+          [
+            132.69,
+            33.82
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "matsuyama-expressway-four-lane",
+      "properties": {
+        "projectId": "matsuyama-expressway-four-lane",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            132.76,
+            33.78
+          ],
+          [
+            132.7,
+            33.66
+          ],
+          [
+            132.65,
+            33.55
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hijikawa-nomura-major-river",
+      "properties": {
+        "projectId": "hijikawa-nomura-major-river",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.65,
+          33.37
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "nomura-bridge",
+      "properties": {
+        "projectId": "nomura-bridge",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.649,
+          33.371
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "tsushima-road",
+      "properties": {
+        "projectId": "tsushima-road",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            132.56,
+            33.18
+          ],
+          [
+            132.53,
+            33.1
+          ],
+          [
+            132.51,
+            33.03
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hijikawa-interproject-river",
+      "properties": {
+        "projectId": "hijikawa-interproject-river",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.55,
+          33.51
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "higashikama-sabo",
+      "properties": {
+        "projectId": "higashikama-sabo",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.55,
+          33.2
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "tsuwai-landslide",
+      "properties": {
+        "projectId": "tsuwai-landslide",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.42,
+          33.47
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "tsubasa-bridge",
+      "properties": {
+        "projectId": "tsubasa-bridge",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.54,
+          33.13
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "kitayamazaki-coast",
+      "properties": {
+        "projectId": "kitayamazaki-coast",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.68,
+          33.75
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "kawanoe-mishima-bypass",
+      "properties": {
+        "projectId": "kawanoe-mishima-bypass",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            133.55,
+            33.98
+          ],
+          [
+            133.5,
+            33.98
+          ],
+          [
+            133.45,
+            33.98
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "niihama-bypass",
+      "properties": {
+        "projectId": "niihama-bypass",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            133.33,
+            33.95
+          ],
+          [
+            133.3,
+            33.94
+          ],
+          [
+            133.27,
+            33.93
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "komatsu-bypass",
+      "properties": {
+        "projectId": "komatsu-bypass",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            133.13,
+            33.89
+          ],
+          [
+            133.1,
+            33.88
+          ],
+          [
+            133.07,
+            33.87
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "yawatahama-road",
+      "properties": {
+        "projectId": "yawatahama-road",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            132.43,
+            33.46
+          ],
+          [
+            132.42,
+            33.45
+          ],
+          [
+            132.41,
+            33.44
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "sukumo-uchiumi-misho-uchiumi",
+      "properties": {
+        "projectId": "sukumo-uchiumi-misho-uchiumi",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            132.52,
+            32.96
+          ],
+          [
+            132.5,
+            32.92
+          ],
+          [
+            132.48,
+            32.88
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "matsuyama-outer-ring-inter-east",
+      "properties": {
+        "projectId": "matsuyama-outer-ring-inter-east",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            132.77,
+            33.78
+          ],
+          [
+            132.79,
+            33.79
+          ],
+          [
+            132.81,
+            33.8
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "nomura-dam-improvement",
+      "properties": {
+        "projectId": "nomura-dam-improvement",
+        "locationAccuracy": "approximate"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          132.67,
+          33.37
+        ]
+      }
+    }
+  ]
+}
