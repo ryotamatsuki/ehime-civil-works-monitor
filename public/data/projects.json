@@ -1,8 +1,8 @@
 {
   "schemaVersion": "2.2.0",
-  "datasetTitle": "Ehime Civil Works Monitor Phase 2.2 — Project Inventory Expansion",
+  "datasetTitle": "Ehime Civil Works Monitor Phase 2.3 — Data Completion",
   "generatedAt": "2026-08-31",
-  "dataPolicy": "公的機関の一次資料を優先し、不明値は推測せずnullとする。Phase 2.2では事業存在・名称・位置・出典を確認できた案件をInventoryとして収録し、総事業費・完成予定・進捗等は追加一次資料で確認できた場合だけsnapshot/historyへ昇格する。概略位置・概略ルートは公式施工範囲・線形を示さない。",
+  "dataPolicy": "公的機関の一次資料を優先し、不明値は推測せずnullとする。Phase 2.3ではInventory案件を個別一次資料で再調査し、比較可能性・scope・基準時点を確認できた値だけsnapshot/history/enrichmentへ昇格する。古い完成見込み、区間別工事着手率、計画期間を現在の物理進捗や事業採択年度へ機械的に読み替えない。",
   "projects": [
     {
       "id": "tachima-kuniyasu-kawachi-river",
@@ -2093,17 +2093,17 @@
       ],
       "status": "under_construction",
       "statusLabel": "事業中",
-      "startFiscalYear": null,
-      "plannedCompletionFiscalYear": null,
-      "totalProjectCostMillionYen": null,
+      "startFiscalYear": 1994,
+      "plannedCompletionFiscalYear": 2030,
+      "totalProjectCostMillionYen": 6200,
       "currentFiscalYearBudgetMillionYen": null,
       "progressPercent": null,
       "progressAsOf": null,
       "landAcquisitionProgressPercent": null,
-      "benefitCostRatio": null,
+      "benefitCostRatio": 1.1,
       "lastVerified": "2026-08-31",
       "summary": "東予港で岸壁・防波堤等の港湾機能を整備・改良する事業。",
-      "scope": "管内図の主要事業パネルと公共事業評価資料で事業存在を確認。個別施設の事業費を港全体の総事業費として合算しない。",
+      "scope": "東予港西条地区の小型船だまり整備。令和4年度第2回再評価では令和12年度末の完成を目標とし、総事業費は約62億円、B/Cは1.10。",
       "geometryRef": "toyo-port-improvement",
       "locationAccuracy": "approximate",
       "locationSource": "source-ehime-civil-works-2026-map",
@@ -2123,6 +2123,21 @@
           "publisher": "愛媛県",
           "url": "https://www.pref.ehime.jp/page/8359.html",
           "accessed": "2026-08-31"
+        },
+        {
+          "id": "phase23-toyo-r4",
+          "title": "港湾改修事業（東予港）再評価個表",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/uploaded/attachment/45521.pdf",
+          "accessed": "2026-08-31",
+          "note": "資料上の全体事業費は「約62億円」と表記。"
+        },
+        {
+          "id": "phase23-toyo-r3",
+          "title": "令和3年度 愛媛県公共事業評価委員会 再評価事業一覧表",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/uploaded/attachment/45475.pdf",
+          "accessed": "2026-08-31"
         }
       ],
       "provenance": {
@@ -2130,10 +2145,40 @@
         "category": "source-ehime-civil-works-2026-map",
         "status": "source-ehime-civil-works-2026-map",
         "summary": "source-ehime-civil-works-2026-map",
-        "geometryRef": "source-ehime-civil-works-2026-map"
+        "geometryRef": "source-ehime-civil-works-2026-map",
+        "startFiscalYear": "phase23-toyo-r4",
+        "plannedCompletionFiscalYear": "phase23-toyo-r4",
+        "totalProjectCostMillionYen": "phase23-toyo-r4",
+        "benefitCostRatio": "phase23-toyo-r4"
       },
-      "costHistory": [],
-      "scheduleHistory": [],
+      "costHistory": [
+        {
+          "asOf": "2021-09-06",
+          "fiscalYear": 2021,
+          "valueMillionYen": 4927,
+          "sourceId": "phase23-toyo-r3",
+          "note": "令和3年度一覧表の現計画。"
+        },
+        {
+          "asOf": "2023-01-19",
+          "fiscalYear": 2022,
+          "valueMillionYen": 6200,
+          "sourceId": "phase23-toyo-r4",
+          "note": "令和4年度第2回再評価資料。資料表記は約62億円。"
+        }
+      ],
+      "scheduleHistory": [
+        {
+          "asOf": "2021-09-06",
+          "plannedCompletionFiscalYear": 2025,
+          "sourceId": "phase23-toyo-r3"
+        },
+        {
+          "asOf": "2023-01-19",
+          "plannedCompletionFiscalYear": 2030,
+          "sourceId": "phase23-toyo-r4"
+        }
+      ],
       "progressHistory": []
     },
     {
@@ -2221,9 +2266,9 @@
       ],
       "status": "planned",
       "statusLabel": "新規事業化",
-      "startFiscalYear": null,
+      "startFiscalYear": 2026,
       "plannedCompletionFiscalYear": null,
-      "totalProjectCostMillionYen": null,
+      "totalProjectCostMillionYen": 23200,
       "currentFiscalYearBudgetMillionYen": null,
       "progressPercent": null,
       "progressAsOf": null,
@@ -2231,7 +2276,7 @@
       "benefitCostRatio": null,
       "lastVerified": "2026-08-31",
       "summary": "三島川之江港金子地区で進める複合一貫輸送ターミナル整備。",
-      "scope": "えひめの土木2026では令和8年度新規事業化として掲載。既存の国際物流ターミナル整備と数値履歴を混同しない。",
+      "scope": "令和8年度新規事業化。国の新規事業採択時評価では総事業費232億円。完成時期は「令和10年代半ば」とされ、正確な年度は公表値として確認できないためnullを維持。",
       "geometryRef": "mishima-kawanoe-kaneko-roro",
       "locationAccuracy": "approximate",
       "locationSource": "source-ehime-civil-works-2026-map",
@@ -2252,6 +2297,13 @@
           "url": "https://www.pa.skr.mlit.go.jp/matsuyama/5works/harbors/mishima/work.html",
           "accessed": "2026-08-31",
           "note": "既存港湾の事業同一性確認用。令和8年度新規事業の数値根拠には使用しない。"
+        },
+        {
+          "id": "phase23-mishima-r8-eval",
+          "title": "三島川之江港金子地区 複合一貫輸送ターミナル整備事業 新規事業採択時評価",
+          "publisher": "国土交通省",
+          "url": "https://www.mlit.go.jp/policy/shingikai/content/001991682.pdf",
+          "accessed": "2026-08-31"
         }
       ],
       "provenance": {
@@ -2259,9 +2311,18 @@
         "category": "source-ehime-civil-works-2026-map",
         "status": "source-ehime-civil-works-2026-map",
         "summary": "source-ehime-civil-works-2026-map",
-        "geometryRef": "source-ehime-civil-works-2026-map"
+        "geometryRef": "source-ehime-civil-works-2026-map",
+        "startFiscalYear": "phase23-mishima-r8-eval",
+        "totalProjectCostMillionYen": "phase23-mishima-r8-eval"
       },
-      "costHistory": [],
+      "costHistory": [
+        {
+          "asOf": "2026-03-23",
+          "fiscalYear": 2026,
+          "valueMillionYen": 23200,
+          "sourceId": "phase23-mishima-r8-eval"
+        }
+      ],
       "scheduleHistory": [],
       "progressHistory": []
     },
@@ -2278,8 +2339,8 @@
       "status": "under_construction",
       "statusLabel": "事業中",
       "startFiscalYear": null,
-      "plannedCompletionFiscalYear": null,
-      "totalProjectCostMillionYen": null,
+      "plannedCompletionFiscalYear": 2029,
+      "totalProjectCostMillionYen": 1205,
       "currentFiscalYearBudgetMillionYen": null,
       "progressPercent": null,
       "progressAsOf": null,
@@ -2287,7 +2348,7 @@
       "benefitCostRatio": null,
       "lastVerified": "2026-08-31",
       "summary": "界谷川の浸水被害軽減を目的とする河川改修事業。",
-      "scope": "管内図では排水機場を含む主要事業として掲載。詳細数値は比較可能な一次資料を確認後に追加する。",
+      "scope": "R7-R11社会資本総合整備計画では、護岸・掘削・排水機場整備、全体事業費1,205百万円、R7-R11の実施期間として掲載。旧計画の金額とは事業範囲の比較可能性を確認できないため履歴接続しない。",
       "geometryRef": "sakaidani-river",
       "locationAccuracy": "approximate",
       "locationSource": "source-ehime-civil-works-2026-map",
@@ -2307,6 +2368,14 @@
           "publisher": "愛媛県",
           "url": "https://www.pref.ehime.jp/page/8227.html",
           "accessed": "2026-08-31"
+        },
+        {
+          "id": "phase23-sakaidani-r7-plan",
+          "title": "社会資本総合整備計画 防災・安全交付金（界谷川広域河川改修事業）",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/uploaded/attachment/139993.pdf",
+          "accessed": "2026-08-31",
+          "note": "R7-R11計画に記載された要素事業の全体事業費・実施期間。"
         }
       ],
       "provenance": {
@@ -2314,7 +2383,9 @@
         "category": "source-ehime-civil-works-2026-map",
         "status": "source-ehime-civil-works-2026-map",
         "summary": "source-ehime-civil-works-2026-map",
-        "geometryRef": "source-ehime-civil-works-2026-map"
+        "geometryRef": "source-ehime-civil-works-2026-map",
+        "plannedCompletionFiscalYear": "phase23-sakaidani-r7-plan",
+        "totalProjectCostMillionYen": "phase23-sakaidani-r7-plan"
       },
       "costHistory": [],
       "scheduleHistory": [],
@@ -2387,17 +2458,17 @@
       ],
       "status": "under_construction",
       "statusLabel": "事業中",
-      "startFiscalYear": null,
-      "plannedCompletionFiscalYear": null,
-      "totalProjectCostMillionYen": null,
+      "startFiscalYear": 1973,
+      "plannedCompletionFiscalYear": 2033,
+      "totalProjectCostMillionYen": 17440,
       "currentFiscalYearBudgetMillionYen": null,
-      "progressPercent": null,
-      "progressAsOf": null,
-      "landAcquisitionProgressPercent": null,
-      "benefitCostRatio": null,
+      "progressPercent": 89.8,
+      "progressAsOf": "令和4年度末",
+      "landAcquisitionProgressPercent": 87.2,
+      "benefitCostRatio": 11.46,
       "lastVerified": "2026-08-31",
       "summary": "今治市の浅川で進める広域河川改修事業。",
-      "scope": "令和5年度公共事業評価委員会と令和8年度管内図で事業存在を確認。",
+      "scope": "改修区間6,830m。令和5年度再評価では全体事業費17,440百万円、令和4年度末の事業進捗89.8%、用地87.2%、B/C 11.46。",
       "geometryRef": "asakawa-river",
       "locationAccuracy": "approximate",
       "locationSource": "source-ehime-civil-works-2026-map",
@@ -2417,6 +2488,13 @@
           "publisher": "愛媛県",
           "url": "https://www.pref.ehime.jp/page/49383.html",
           "accessed": "2026-08-31"
+        },
+        {
+          "id": "phase23-asakawa-r5",
+          "title": "二級河川 浅川 広域河川改修事業 再評価個表",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/uploaded/attachment/100919.pdf",
+          "accessed": "2026-08-31"
         }
       ],
       "provenance": {
@@ -2424,11 +2502,37 @@
         "category": "source-ehime-civil-works-2026-map",
         "status": "source-ehime-civil-works-2026-map",
         "summary": "source-ehime-civil-works-2026-map",
-        "geometryRef": "source-ehime-civil-works-2026-map"
+        "geometryRef": "source-ehime-civil-works-2026-map",
+        "startFiscalYear": "phase23-asakawa-r5",
+        "plannedCompletionFiscalYear": "phase23-asakawa-r5",
+        "totalProjectCostMillionYen": "phase23-asakawa-r5",
+        "progressPercent": "phase23-asakawa-r5",
+        "landAcquisitionProgressPercent": "phase23-asakawa-r5",
+        "benefitCostRatio": "phase23-asakawa-r5"
       },
-      "costHistory": [],
-      "scheduleHistory": [],
-      "progressHistory": []
+      "costHistory": [
+        {
+          "asOf": "2023-10-26",
+          "fiscalYear": 2023,
+          "valueMillionYen": 17440,
+          "sourceId": "phase23-asakawa-r5"
+        }
+      ],
+      "scheduleHistory": [
+        {
+          "asOf": "2023-10-26",
+          "plannedCompletionFiscalYear": 2033,
+          "sourceId": "phase23-asakawa-r5"
+        }
+      ],
+      "progressHistory": [
+        {
+          "asOf": "2023-03-31",
+          "progressPercent": 89.8,
+          "sourceId": "phase23-asakawa-r5",
+          "note": "令和4年度末の事業費換算進捗率。"
+        }
+      ]
     },
     {
       "id": "okawa-river",
@@ -2442,17 +2546,17 @@
       ],
       "status": "under_construction",
       "statusLabel": "事業中",
-      "startFiscalYear": null,
-      "plannedCompletionFiscalYear": null,
-      "totalProjectCostMillionYen": null,
+      "startFiscalYear": 1970,
+      "plannedCompletionFiscalYear": 2028,
+      "totalProjectCostMillionYen": 5500,
       "currentFiscalYearBudgetMillionYen": null,
-      "progressPercent": null,
-      "progressAsOf": null,
-      "landAcquisitionProgressPercent": null,
-      "benefitCostRatio": null,
+      "progressPercent": 91.9,
+      "progressAsOf": "令和4年度末",
+      "landAcquisitionProgressPercent": 91.5,
+      "benefitCostRatio": 22.82,
       "lastVerified": "2026-08-31",
       "summary": "松山市の大川で進める広域河川改修事業。",
-      "scope": "令和5年度公共事業評価委員会と令和8年度管内図で事業存在を確認。",
+      "scope": "全体計画2,650m。令和5年度再評価では全体事業費5,500百万円、令和4年度末の事業進捗91.9%、用地91.5%、B/C 22.82。",
       "geometryRef": "okawa-river",
       "locationAccuracy": "approximate",
       "locationSource": "source-ehime-civil-works-2026-map",
@@ -2472,6 +2576,13 @@
           "publisher": "愛媛県",
           "url": "https://www.pref.ehime.jp/page/49383.html",
           "accessed": "2026-08-31"
+        },
+        {
+          "id": "phase23-okawa-r5",
+          "title": "二級河川 大川 広域河川改修事業 再評価個表",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/uploaded/attachment/100920.pdf",
+          "accessed": "2026-08-31"
         }
       ],
       "provenance": {
@@ -2479,11 +2590,37 @@
         "category": "source-ehime-civil-works-2026-map",
         "status": "source-ehime-civil-works-2026-map",
         "summary": "source-ehime-civil-works-2026-map",
-        "geometryRef": "source-ehime-civil-works-2026-map"
+        "geometryRef": "source-ehime-civil-works-2026-map",
+        "startFiscalYear": "phase23-okawa-r5",
+        "plannedCompletionFiscalYear": "phase23-okawa-r5",
+        "totalProjectCostMillionYen": "phase23-okawa-r5",
+        "progressPercent": "phase23-okawa-r5",
+        "landAcquisitionProgressPercent": "phase23-okawa-r5",
+        "benefitCostRatio": "phase23-okawa-r5"
       },
-      "costHistory": [],
-      "scheduleHistory": [],
-      "progressHistory": []
+      "costHistory": [
+        {
+          "asOf": "2023-10-26",
+          "fiscalYear": 2023,
+          "valueMillionYen": 5500,
+          "sourceId": "phase23-okawa-r5"
+        }
+      ],
+      "scheduleHistory": [
+        {
+          "asOf": "2023-10-26",
+          "plannedCompletionFiscalYear": 2028,
+          "sourceId": "phase23-okawa-r5"
+        }
+      ],
+      "progressHistory": [
+        {
+          "asOf": "2023-03-31",
+          "progressPercent": 91.9,
+          "sourceId": "phase23-okawa-r5",
+          "note": "令和4年度末の事業費換算進捗率。"
+        }
+      ]
     },
     {
       "id": "matsuyama-port-improvement",
@@ -2552,17 +2689,17 @@
       ],
       "status": "under_construction",
       "statusLabel": "事業中",
-      "startFiscalYear": null,
+      "startFiscalYear": 2016,
       "plannedCompletionFiscalYear": null,
-      "totalProjectCostMillionYen": null,
+      "totalProjectCostMillionYen": 360,
       "currentFiscalYearBudgetMillionYen": null,
-      "progressPercent": null,
-      "progressAsOf": null,
-      "landAcquisitionProgressPercent": null,
-      "benefitCostRatio": null,
+      "progressPercent": 73.6,
+      "progressAsOf": "令和4年度末",
+      "landAcquisitionProgressPercent": 100.0,
+      "benefitCostRatio": 15.98,
       "lastVerified": "2026-08-31",
       "summary": "伊予市八倉の中ノ谷川で進める通常砂防事業。",
-      "scope": "同名渓流との誤統合を避け、伊予市八倉の事業として登録。",
+      "scope": "透過型堰堤1基、渓流保全工27.5m、管理用道路325m。R5再評価では総事業費360百万円、R4末事業進捗73.6%、用地100%、B/C 15.98。R6完成見込みは既に経過しているため現在の完成予定年度には採用しない。",
       "geometryRef": "nakanotani-sabo",
       "locationAccuracy": "approximate",
       "locationSource": "source-ehime-civil-works-2026-map",
@@ -2582,6 +2719,13 @@
           "publisher": "愛媛県",
           "url": "https://www.pref.ehime.jp/page/10251.html",
           "accessed": "2026-08-31"
+        },
+        {
+          "id": "phase23-nakanotani-r5",
+          "title": "通常砂防事業（中ノ谷川）再評価個表",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/uploaded/attachment/100897.pdf",
+          "accessed": "2026-08-31"
         }
       ],
       "provenance": {
@@ -2589,11 +2733,30 @@
         "category": "source-ehime-civil-works-2026-map",
         "status": "source-ehime-civil-works-2026-map",
         "summary": "source-ehime-civil-works-2026-map",
-        "geometryRef": "source-ehime-civil-works-2026-map"
+        "geometryRef": "source-ehime-civil-works-2026-map",
+        "startFiscalYear": "phase23-nakanotani-r5",
+        "totalProjectCostMillionYen": "phase23-nakanotani-r5",
+        "progressPercent": "phase23-nakanotani-r5",
+        "landAcquisitionProgressPercent": "phase23-nakanotani-r5",
+        "benefitCostRatio": "phase23-nakanotani-r5"
       },
-      "costHistory": [],
+      "costHistory": [
+        {
+          "asOf": "2023-10-26",
+          "fiscalYear": 2023,
+          "valueMillionYen": 360,
+          "sourceId": "phase23-nakanotani-r5"
+        }
+      ],
       "scheduleHistory": [],
-      "progressHistory": []
+      "progressHistory": [
+        {
+          "asOf": "2023-03-31",
+          "progressPercent": 73.6,
+          "sourceId": "phase23-nakanotani-r5",
+          "note": "令和4年度末の事業費換算進捗率。"
+        }
+      ]
     },
     {
       "id": "matsuyama-outer-ring-airport",
@@ -2695,11 +2858,11 @@
       "currentFiscalYearBudgetMillionYen": null,
       "progressPercent": null,
       "progressAsOf": null,
-      "landAcquisitionProgressPercent": null,
+      "landAcquisitionProgressPercent": 100.0,
       "benefitCostRatio": null,
       "lastVerified": "2026-08-31",
       "summary": "松山自動車道の伊予IC～大洲IC間で進める4車線化事業。",
-      "scope": "一部区間は4車線化済みだが、内子・大洲地区等で工事・調査が継続しているため事業全体をcompletedとはしない。",
+      "scope": "対象3区間はいずれも令和8年7月末時点で用地取得率100%。工事着手率は区間別に100%・31%・0%であり、物理的進捗率とは定義が異なるためprogressPercentへ集約しない。",
       "geometryRef": "matsuyama-expressway-four-lane",
       "locationAccuracy": "approximate",
       "locationSource": "source-ehime-civil-works-2026-map",
@@ -2719,6 +2882,13 @@
           "publisher": "NEXCO西日本",
           "url": "https://corp.w-nexco.co.jp/activity/open_info/progress/individual/58/",
           "accessed": "2026-08-31"
+        },
+        {
+          "id": "phase23-matsuyama-exp-current",
+          "title": "E56 松山自動車道（伊予IC～大洲IC）4車線化 建設進捗情報",
+          "publisher": "NEXCO西日本",
+          "url": "https://corp.w-nexco.co.jp/activity/open_info/progress/individual/58/",
+          "accessed": "2026-08-31"
         }
       ],
       "provenance": {
@@ -2726,7 +2896,8 @@
         "category": "source-ehime-civil-works-2026-map",
         "status": "source-ehime-civil-works-2026-map",
         "summary": "source-ehime-civil-works-2026-map",
-        "geometryRef": "source-ehime-civil-works-2026-map"
+        "geometryRef": "source-ehime-civil-works-2026-map",
+        "landAcquisitionProgressPercent": "phase23-matsuyama-exp-current"
       },
       "costHistory": [],
       "scheduleHistory": [],
@@ -2809,8 +2980,8 @@
       ],
       "status": "under_construction",
       "statusLabel": "事業中",
-      "startFiscalYear": null,
-      "plannedCompletionFiscalYear": null,
+      "startFiscalYear": 2023,
+      "plannedCompletionFiscalYear": 2026,
       "totalProjectCostMillionYen": null,
       "currentFiscalYearBudgetMillionYen": null,
       "progressPercent": null,
@@ -2819,7 +2990,7 @@
       "benefitCostRatio": null,
       "lastVerified": "2026-08-31",
       "summary": "肱川大規模特定河川事業に伴う国道441号野村大橋の架替。",
-      "scope": "河川事業と関連するが、えひめの土木2026では独立した主要事業として掲載されるためrelated projectとして別IDで管理する。",
+      "scope": "野村大橋架替え。仮橋工事は令和5年4月着手、令和7年3月に仮橋へ交通切替。令和7年度に本橋工事着手、令和8年度に本橋完成・交通切替予定。",
       "geometryRef": "nomura-bridge",
       "locationAccuracy": "approximate",
       "locationSource": "source-ehime-civil-works-2026-map",
@@ -2839,6 +3010,13 @@
           "publisher": "愛媛県",
           "url": "https://www.pref.ehime.jp/page/1711.html",
           "accessed": "2026-08-31"
+        },
+        {
+          "id": "phase23-nomura-bridge-current",
+          "title": "一級河川肱川（西予市野村町野村）大規模特定河川事業の概要",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/page/1711.html",
+          "accessed": "2026-08-31"
         }
       ],
       "provenance": {
@@ -2846,10 +3024,19 @@
         "category": "source-ehime-civil-works-2026-map",
         "status": "source-ehime-civil-works-2026-map",
         "summary": "source-ehime-civil-works-2026-map",
-        "geometryRef": "source-ehime-civil-works-2026-map"
+        "geometryRef": "source-ehime-civil-works-2026-map",
+        "startFiscalYear": "phase23-nomura-bridge-current",
+        "plannedCompletionFiscalYear": "phase23-nomura-bridge-current"
       },
       "costHistory": [],
-      "scheduleHistory": [],
+      "scheduleHistory": [
+        {
+          "asOf": "2025-03-07",
+          "plannedCompletionFiscalYear": 2026,
+          "sourceId": "phase23-nomura-bridge-current",
+          "note": "本橋完成・交通切替予定年度。"
+        }
+      ],
       "progressHistory": []
     },
     {
@@ -2938,17 +3125,17 @@
       ],
       "status": "under_construction",
       "statusLabel": "事業中",
-      "startFiscalYear": null,
-      "plannedCompletionFiscalYear": null,
-      "totalProjectCostMillionYen": null,
+      "startFiscalYear": 2020,
+      "plannedCompletionFiscalYear": 2027,
+      "totalProjectCostMillionYen": 5000,
       "currentFiscalYearBudgetMillionYen": null,
-      "progressPercent": null,
-      "progressAsOf": null,
-      "landAcquisitionProgressPercent": null,
-      "benefitCostRatio": null,
+      "progressPercent": 21.4,
+      "progressAsOf": "令和4年度末",
+      "landAcquisitionProgressPercent": 30.5,
+      "benefitCostRatio": 1.13,
       "lastVerified": "2026-08-31",
       "summary": "肱川水系で国の治水対策と連携して進める事業間連携河川事業。",
-      "scope": "令和5年度公共事業評価委員会の同名事業と管内図を照合。工区別の費用を無条件に事業全体へ合算しない。",
+      "scope": "計画延長2,200m。R5再評価では総事業費5,000百万円、R4末事業進捗21.4%、用地30.5%、B/C 1.13。",
       "geometryRef": "hijikawa-interproject-river",
       "locationAccuracy": "approximate",
       "locationSource": "source-ehime-civil-works-2026-map",
@@ -2968,6 +3155,13 @@
           "publisher": "愛媛県",
           "url": "https://www.pref.ehime.jp/page/49383.html",
           "accessed": "2026-08-31"
+        },
+        {
+          "id": "phase23-hijikawa-r5",
+          "title": "事業間連携河川事業（一級河川肱川）再評価個表",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/uploaded/attachment/100886.pdf",
+          "accessed": "2026-08-31"
         }
       ],
       "provenance": {
@@ -2975,11 +3169,37 @@
         "category": "source-ehime-civil-works-2026-map",
         "status": "source-ehime-civil-works-2026-map",
         "summary": "source-ehime-civil-works-2026-map",
-        "geometryRef": "source-ehime-civil-works-2026-map"
+        "geometryRef": "source-ehime-civil-works-2026-map",
+        "startFiscalYear": "phase23-hijikawa-r5",
+        "plannedCompletionFiscalYear": "phase23-hijikawa-r5",
+        "totalProjectCostMillionYen": "phase23-hijikawa-r5",
+        "progressPercent": "phase23-hijikawa-r5",
+        "landAcquisitionProgressPercent": "phase23-hijikawa-r5",
+        "benefitCostRatio": "phase23-hijikawa-r5"
       },
-      "costHistory": [],
-      "scheduleHistory": [],
-      "progressHistory": []
+      "costHistory": [
+        {
+          "asOf": "2023-10-26",
+          "fiscalYear": 2023,
+          "valueMillionYen": 5000,
+          "sourceId": "phase23-hijikawa-r5"
+        }
+      ],
+      "scheduleHistory": [
+        {
+          "asOf": "2023-10-26",
+          "plannedCompletionFiscalYear": 2027,
+          "sourceId": "phase23-hijikawa-r5"
+        }
+      ],
+      "progressHistory": [
+        {
+          "asOf": "2023-03-31",
+          "progressPercent": 21.4,
+          "sourceId": "phase23-hijikawa-r5",
+          "note": "令和4年度末の事業費換算進捗率。"
+        }
+      ]
     },
     {
       "id": "higashikama-sabo",
@@ -2994,16 +3214,16 @@
       "status": "under_construction",
       "statusLabel": "事業中",
       "startFiscalYear": null,
-      "plannedCompletionFiscalYear": null,
-      "totalProjectCostMillionYen": null,
+      "plannedCompletionFiscalYear": 2026,
+      "totalProjectCostMillionYen": 44,
       "currentFiscalYearBudgetMillionYen": null,
       "progressPercent": null,
       "progressAsOf": null,
       "landAcquisitionProgressPercent": null,
-      "benefitCostRatio": null,
+      "benefitCostRatio": 3.08,
       "lastVerified": "2026-08-31",
       "summary": "宇和島市の東鎌川で進める通常砂防事業。",
-      "scope": "管内図と愛媛県の砂防関係計画資料で事業存在を確認。",
+      "scope": "R7-R11社会資本総合整備計画では東鎌川通常砂防事業をR7-R8、全体事業費44百万円、B/C 3.08として掲載。計画開始年度を事業採択年度とはみなさない。",
       "geometryRef": "higashikama-sabo",
       "locationAccuracy": "approximate",
       "locationSource": "source-ehime-civil-works-2026-map",
@@ -3023,6 +3243,13 @@
           "publisher": "愛媛県",
           "url": "https://www.pref.ehime.jp/uploaded/attachment/165838.pdf",
           "accessed": "2026-08-31"
+        },
+        {
+          "id": "phase23-higashikama-r7-plan",
+          "title": "土砂災害につよい愛ある県土づくり 社会資本総合整備計画（東鎌川通常砂防事業）",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/uploaded/attachment/165838.pdf",
+          "accessed": "2026-08-31"
         }
       ],
       "provenance": {
@@ -3030,7 +3257,10 @@
         "category": "source-ehime-civil-works-2026-map",
         "status": "source-ehime-civil-works-2026-map",
         "summary": "source-ehime-civil-works-2026-map",
-        "geometryRef": "source-ehime-civil-works-2026-map"
+        "geometryRef": "source-ehime-civil-works-2026-map",
+        "plannedCompletionFiscalYear": "phase23-higashikama-r7-plan",
+        "totalProjectCostMillionYen": "phase23-higashikama-r7-plan",
+        "benefitCostRatio": "phase23-higashikama-r7-plan"
       },
       "costHistory": [],
       "scheduleHistory": [],
@@ -3049,16 +3279,16 @@
       "status": "under_construction",
       "statusLabel": "事業中",
       "startFiscalYear": null,
-      "plannedCompletionFiscalYear": null,
-      "totalProjectCostMillionYen": null,
+      "plannedCompletionFiscalYear": 2029,
+      "totalProjectCostMillionYen": 300,
       "currentFiscalYearBudgetMillionYen": null,
       "progressPercent": null,
       "progressAsOf": null,
       "landAcquisitionProgressPercent": null,
-      "benefitCostRatio": null,
+      "benefitCostRatio": 35.7,
       "lastVerified": "2026-08-31",
       "summary": "八幡浜市津羽井で集水井・横ボーリング・アンカー等を行う地すべり対策事業。",
-      "scope": "管内図と国土強靱化関係資料で事業存在・場所を確認。",
+      "scope": "R7-R11社会資本総合整備計画では水路工、全体事業費300百万円、B/C 35.7、R7-R11の実施期間として掲載。過年度にも同地区で事業があるためR7を事業採択年度とはみなさない。",
       "geometryRef": "tsuwai-landslide",
       "locationAccuracy": "approximate",
       "locationSource": "source-ehime-civil-works-2026-map",
@@ -3078,6 +3308,13 @@
           "publisher": "愛媛県",
           "url": "https://www.pref.ehime.jp/uploaded/attachment/131215.pdf",
           "accessed": "2026-08-31"
+        },
+        {
+          "id": "phase23-tsuwai-r7-plan",
+          "title": "土砂災害につよい愛ある県土づくり 社会資本総合整備計画（津羽井地区地すべり対策事業）",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/uploaded/attachment/165838.pdf",
+          "accessed": "2026-08-31"
         }
       ],
       "provenance": {
@@ -3085,7 +3322,10 @@
         "category": "source-ehime-civil-works-2026-map",
         "status": "source-ehime-civil-works-2026-map",
         "summary": "source-ehime-civil-works-2026-map",
-        "geometryRef": "source-ehime-civil-works-2026-map"
+        "geometryRef": "source-ehime-civil-works-2026-map",
+        "plannedCompletionFiscalYear": "phase23-tsuwai-r7-plan",
+        "totalProjectCostMillionYen": "phase23-tsuwai-r7-plan",
+        "benefitCostRatio": "phase23-tsuwai-r7-plan"
       },
       "costHistory": [],
       "scheduleHistory": [],
@@ -3432,17 +3672,17 @@
       ],
       "status": "completed",
       "statusLabel": "供用済",
-      "startFiscalYear": null,
-      "plannedCompletionFiscalYear": null,
-      "totalProjectCostMillionYen": null,
+      "startFiscalYear": 2005,
+      "plannedCompletionFiscalYear": 2022,
+      "totalProjectCostMillionYen": 25200,
       "currentFiscalYearBudgetMillionYen": null,
       "progressPercent": null,
       "progressAsOf": null,
       "landAcquisitionProgressPercent": null,
-      "benefitCostRatio": null,
+      "benefitCostRatio": 0.53,
       "lastVerified": "2026-08-31",
       "summary": "大洲・八幡浜自動車道を構成する八幡浜道路。",
-      "scope": "八幡浜市郷～大平の延長3.8km区間は令和5年3月25日に開通。完成済事業のため進捗率100%とは推定しない。",
+      "scope": "延長3.8km、2車線。事業期間H17-R4、総事業費約252億円。令和5年3月25日に全区間を一般交通へ供用。R3再評価時の事業全体B/Cは0.53。",
       "geometryRef": "yawatahama-road",
       "locationAccuracy": "approximate",
       "locationSource": "source-ehime-civil-works-2026-map",
@@ -3462,17 +3702,50 @@
           "publisher": "愛媛県",
           "url": "https://www.pref.ehime.jp/page/8581.html",
           "accessed": "2026-08-31"
+        },
+        {
+          "id": "phase23-yawatahama-open",
+          "title": "大洲・八幡浜自動車道「八幡浜道路」の開通式の開催について",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/page/8595.html",
+          "accessed": "2026-08-31"
+        },
+        {
+          "id": "phase23-yawatahama-r3",
+          "title": "道路改築事業 一般国道197号 八幡浜道路 再評価個表",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/uploaded/attachment/45484.pdf",
+          "accessed": "2026-08-31"
         }
       ],
       "provenance": {
         "name": "source-ehime-civil-works-2026-map",
         "category": "source-ehime-civil-works-2026-map",
-        "status": "source-ehime-civil-works-2026-map",
+        "status": "phase23-yawatahama-open",
         "summary": "source-ehime-civil-works-2026-map",
-        "geometryRef": "source-ehime-civil-works-2026-map"
+        "geometryRef": "source-ehime-civil-works-2026-map",
+        "startFiscalYear": "phase23-yawatahama-open",
+        "plannedCompletionFiscalYear": "phase23-yawatahama-open",
+        "totalProjectCostMillionYen": "phase23-yawatahama-open",
+        "benefitCostRatio": "phase23-yawatahama-r3"
       },
-      "costHistory": [],
-      "scheduleHistory": [],
+      "costHistory": [
+        {
+          "asOf": "2023-03-25",
+          "fiscalYear": 2022,
+          "valueMillionYen": 25200,
+          "sourceId": "phase23-yawatahama-open",
+          "note": "開通時公表の総事業費約252億円。"
+        }
+      ],
+      "scheduleHistory": [
+        {
+          "asOf": "2023-03-25",
+          "plannedCompletionFiscalYear": 2022,
+          "sourceId": "phase23-yawatahama-open",
+          "note": "公表された事業期間H17-R4。"
+        }
+      ],
       "progressHistory": []
     },
     {
@@ -3641,8 +3914,8 @@
       "status": "under_construction",
       "statusLabel": "事業中",
       "startFiscalYear": null,
-      "plannedCompletionFiscalYear": null,
-      "totalProjectCostMillionYen": null,
+      "plannedCompletionFiscalYear": 2027,
+      "totalProjectCostMillionYen": 20500,
       "currentFiscalYearBudgetMillionYen": null,
       "progressPercent": null,
       "progressAsOf": null,
@@ -3650,7 +3923,7 @@
       "benefitCostRatio": null,
       "lastVerified": "2026-08-31",
       "summary": "野村ダムに新たな放流設備等を整備し治水機能を強化する改良事業。",
-      "scope": "令和8年度管内図で主要事業として位置を確認し、四国地方整備局の公式説明で事業内容を確認。",
+      "scope": "放流設備増設等の野村ダム施設改良。国交省技術資料では令和9年度末完成を目標、全体工事費は約205億円。",
       "geometryRef": "nomura-dam-improvement",
       "locationAccuracy": "approximate",
       "locationSource": "source-ehime-civil-works-2026-map",
@@ -3670,6 +3943,14 @@
           "publisher": "国土交通省 四国地方整備局",
           "url": "https://www.skr.mlit.go.jp/oozu/kawa/ksq_202210500_1.html",
           "accessed": "2026-08-31"
+        },
+        {
+          "id": "phase23-nomura-dam-r6-paper",
+          "title": "野村ダム施設改良工事の進捗と最新技術の採用",
+          "publisher": "国土交通省 四国地方整備局",
+          "url": "https://www.skr.mlit.go.jp/kikaku/kenkyu/r6/ronbun/13.pdf",
+          "accessed": "2026-08-31",
+          "note": "全体工事費は資料上「約205億円」。"
         }
       ],
       "provenance": {
@@ -3677,7 +3958,9 @@
         "category": "source-ehime-civil-works-2026-map",
         "status": "source-ehime-civil-works-2026-map",
         "summary": "source-ehime-civil-works-2026-map",
-        "geometryRef": "source-ehime-civil-works-2026-map"
+        "geometryRef": "source-ehime-civil-works-2026-map",
+        "plannedCompletionFiscalYear": "phase23-nomura-dam-r6-paper",
+        "totalProjectCostMillionYen": "phase23-nomura-dam-r6-paper"
       },
       "costHistory": [],
       "scheduleHistory": [],

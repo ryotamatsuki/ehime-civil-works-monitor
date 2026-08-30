@@ -20,10 +20,12 @@ def has_multi_history(project):
 
 
 def has_snapshot(project):
-    return any(project.get(key) is not None for key in (
-        "totalProjectCostMillionYen", "plannedCompletionFiscalYear", "progressPercent",
-        "startFiscalYear", "benefitCostRatio"
+    current_values = any(project.get(key) is not None for key in (
+        "startFiscalYear", "plannedCompletionFiscalYear", "totalProjectCostMillionYen",
+        "progressPercent", "landAcquisitionProgressPercent", "benefitCostRatio"
     ))
+    any_history = any(bool(project.get(key, [])) for key in ("costHistory", "scheduleHistory", "progressHistory"))
+    return current_values or any_history
 
 
 enriched_ids = {record["projectId"] for record in ENRICHMENT if has_nonempty_enrichment(record)}
