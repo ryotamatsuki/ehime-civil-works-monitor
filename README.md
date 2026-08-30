@@ -1,91 +1,134 @@
 # Ehime Civil Works Monitor
 
-愛媛県内の主要公共土木事業を、地図・事業費・進捗・完成予定・一次情報源とその変化から確認するための非公式Web GISです。
+愛媛県内の主要公共事業を、地図・一次情報源・現在値・履歴・変更から確認するための非公式Web GISです。
 
 ## What is this?
 
-公共機関が公開している事業評価資料等を構造化し、「どこで、どのような事業が、いくらの事業費で、どの段階まで進み、過去の公表値から何が変わったか」を一次資料まで遡れる形で探索できるようにします。
+Phase 2.2では、深い数値データがある案件だけを掲載する方式から、**Project Inventory → Current Snapshot → History → Change Detection → Enrichment → Primary Sources** という段階構造へ移行しました。
 
-Phase 1では令和7年度愛媛県公共事業評価委員会の審議対象県事業から10件を収録しました。Phase 2では比較可能な過年度一次資料を確認できた案件にCost / Schedule / Progress履歴を追加し、変更を履歴から自動導出しました。Phase 2.1では当初10案件を一次資料でさらに深掘りし、年度予算・累計投資事業費・B/C履歴・文書化された増額／延期事情を別レイヤーとして追加したうえで、令和6年度公共事業評価委員会の再評価13案件（松山市付託1件を含む）をcohort単位で収録しました。
+- **Project Inventory**: 事業存在・名称・地域・位置・一次資料を確認できた主要事業を広く掲載
+- **Monitored Project**: 総事業費、完成予定、進捗等を一次資料で確認できた案件を数値監視
+- **History**: 同一定義で比較できる過年度値だけを保存
+- **Change Detection**: `COST+`, `COST−`, `DELAYED`, `EARLIER`, `UPDATED` を履歴から自動導出
+- **Enrichment**: 年度予算、累計投資、B/C、一次資料に明記された増額・延期事情を追加
 
-## Phase 2.1 Data Enrichment
+未確認値は推測せず `null` または空配列とします。
+
+## Phase 2.2 — Project Inventory Expansion
+
+主要なinventory seedは、愛媛県「えひめの土木2026 愛媛県管内図」です。
+
+- https://www.pref.ehime.jp/uploaded/life/149017_306429_misc.pdf
+- FY2026 / 令和8年度時点
+
+管内図は、主に事業の存在、名称、カテゴリー、地域、概略位置・ルート、事業中／供用済等の文脈を確認するために使用します。総事業費・完成年度・進捗率は、個別の公式事業資料・再評価資料等で確認できた場合だけ収録します。
+
+現在のcanonical datasetは **50案件** です。Phase 2.2で高信頼に照合できた管内図候補33件について、既存6件を既存IDへreconcileし、新規27件を追加しました。小さく判読・同定できない地図ラベルは推測登録していません。
+
+### Data Depth
+
+Data DepthはJSONに固定保存せず、現在の収録データからderiveします。
+
+- `INVENTORY` — 事業位置・概要・一次資料を確認
+- `SNAPSHOT` — 現在の主要数値を少なくとも1つ確認
+- `HISTORY` — Cost / Schedule / Progressの比較可能な複数時点あり
+- `ENRICHED` — 年度予算・累計投資・B/C・documented reasons等あり
+
+現在のexclusive distributionは、Inventory 17 / Snapshot 11 / History 0 / Enriched 22です。Enriched案件にも履歴が含まれるため、UIの `History+` は22案件です。
+
+### Geometry
+
+50 GeoJSON featuresの内訳は、Point 40 / LineString 10です。Phase 2.2で追加した路線LineStringはすべて `locationAccuracy: approximate` とし、破線表示します。これは路線の位置関係を把握するための概略ルートであり、公式線形・施工範囲・用地境界ではありません。
+
+詳細なcoverage auditは [`docs/inventory-coverage.md`](docs/inventory-coverage.md) を参照してください。
+
+## Phase 2.1 — Data Enrichment
 
 - Annual Budget — 案件単位で確認できた年度予算・配分額
 - Cumulative Investment — 累計投資事業費。実績と年度末見込を分離
 - B/C History — 当該事業／ネットワーク全体、事業全体／残事業を分離
 - Documented Reasons — 一次資料に明記された増額・延期・遅延事情のみ
-- Data Depth summary — どの種類の深掘りデータを何案件で確認できたかをトップ画面に表示
 - Dedicated validator — `public/data/enrichment.json` を独立検証
 
-Phase 2.1 enrichmentは掲載全案件にレコードを持たせ、確認できない値は空配列のまま保持します。令和6年度cohortは県事業12件と松山市付託1件の全13案件を収録し、比較可能な過年度資料がある内平ヶ谷川・宇和島港・余戸北吉田線等では履歴まで追加しています。
+年度末見込は `planned` とし、過去年度末の実績 `actual` と区別します。異なる対象範囲のB/Cや、全体事業費と年度予算は混同しません。
 
-重要なデータ品質ルールとして、評価委員会開催時点で将来となる「年度末投資事業費」は `planned` とし、過去年度末の実績 `actual` と区別します。また、R7の大洲西道路・夜昼道路では一覧表と個別再評価票で投資事業費の基準時点表記が一致しないため、詳細個表を優先し、その差異をnoteに残します。
+## Phase 2 — History & Change Detection
 
-## Phase 2 Features
-
-- Cost History — 全体事業費の公表値履歴
+- Cost History — 全体事業費の比較可能な公表値履歴
 - Schedule History — 完成予定年度の履歴
-- Progress History — 比較可能な進捗率の履歴
-- Change Detection — `COST+`, `COST−`, `DELAYED`, `EARLIER`, `UPDATED`
-- Recent Changes — 最新の変更イベントを一覧表示
-- Alert Filter — 通常のカテゴリー・市町・ステータス条件とAND検索
-- Detail Timeline — 各履歴値から原資料へ直接遡れる詳細ページ
-- Dashboard — COST+案件数、DELAYED案件数、直近365日の更新案件数
+- Progress History — 同一定義で比較可能な進捗率
+- Recent Changes — 最新の変更イベント
+- Alert Filter — 通常フィルターとAND検索
+- Detail Timeline — 履歴値から原資料へ直接遡れる詳細ページ
 
-変更フラグはJSONへ手入力せず、`src/domain.ts` が履歴の隣接差分からpure functionとして導出します。
+変更フラグをJSONへ手入力せず、`src/domain.ts` のpure functionが履歴の隣接差分から導出します。
 
-## Existing Features
+## Current coverage
 
-- 国土地理院標準地図上の事業表示
-- カテゴリー、事業主体、市町、ステータスによる絞り込み
+`python3 scripts/report_inventory.py` で再現可能な現在のcoverageは次のとおりです。
+
+| Item | Projects |
+| --- | ---: |
+| Canonical projects | 50 |
+| Monitored (Snapshot / History / Enriched) | 33 |
+| Known total project cost | 32 |
+| Known completion year | 22 |
+| Known progress | 29 |
+| Comparable Cost History (2+) | 7 |
+| Comparable Schedule History (2+) | 7 |
+| Comparable Progress History (2+) | 5 |
+| B/C enrichment | 22 |
+| Documented reasons | 11 |
+
+## Features
+
+- 国土地理院標準地図上のPoint / LineString表示
+- カテゴリー、事業主体、市町、ステータス、Data Depthによる絞り込み
+- 変更ラベルによる絞り込み
 - 事業名・市町名のフリーワード検索
-- 事業別の詳細ページ
-- フィールド単位のprovenance
-- JSON / GeoJSON / History / EnrichmentのPython検証
-- GitHub Actionsによるlint / test / validation / build
-- GitHub Pagesへの静的デプロイ
-
-## Data Sources
-
-主要ソースは愛媛県「公共事業評価委員会」です。
-
-- https://www.pref.ehime.jp/page/127397.html
-- https://www.pref.ehime.jp/uploaded/attachment/162763.pdf
-
-Phase 2 / 2.1では過年度の公共事業評価委員会資料、政府予算案反映状況調書等も用います。各history/enrichment entryの `sourceId` は一次資料へ解決でき、個々の値から原資料へ戻れる設計です。
+- Project Inventoryを含む全案件の静的detail page
+- フィールド単位provenance
+- History / EnrichmentのsourceId traceability
+- Python validator
+- Vitest / ESLint
+- GitHub Actions / GitHub Pages
 
 ## Data Policy
 
-1. 愛媛県、国土交通省、市町等の一次情報を優先します。
-2. 確認できない数値は推測せず `null` または空配列とします。
-3. 年度事業費・全体事業費・予算額・契約額・累計投資事業費を区別します。
-4. `costHistory` は全体事業費だけを比較します。
-5. 年度予算は全体事業費の増減検知に使用しません。
-6. 累計投資は `actual` と `planned` を分離します。
-7. B/Cは対象範囲（project/network）と評価視点（whole/remaining）を分離します。
-8. 異なる定義の進捗率を同一時系列として比較しません。
-9. 重要な現在値は `provenance`、履歴・enrichment値は `sourceId` で根拠へ紐付けます。
-10. 増額・延期理由は一次資料に明記された場合だけ記録し、AIで推測しません。
-11. `delay_context` の記述だけから機械的な `DELAYED` イベントを生成しません。
-12. `lastVerified` と各sourceの `accessed` を保持します。
-13. `locationAccuracy: approximate` は概略位置であり、施工範囲を示しません。
+1. 愛媛県、国土交通省、市町、事業主体等の一次情報を優先します。
+2. 事業存在・名称・位置・一次資料を確認できればInventoryへ登録できます。数値情報は必須ではありません。
+3. 確認できない数値は推測せず `null` または空配列とします。
+4. 年度事業費・全体事業費・予算額・契約額・累計投資事業費を区別します。
+5. `costHistory` は全体事業費だけを比較します。
+6. 異なる定義の進捗率を同一時系列として比較しません。
+7. `COST+` や `DELAYED` は履歴差分からのみ生成します。
+8. B/Cは対象範囲と評価視点を分離します。
+9. 増額・延期理由は一次資料に明記された場合だけ記録し、AIで推測しません。
+10. 概略点・概略ルートは `locationAccuracy: approximate` とし、正確な施工区域のように表示しません。
+11. 類似名称を自動mergeしません。
+12. 各案件・履歴値から一次資料へ戻れることを優先します。
 
-**掲載値は各機関の公表資料を整理したものであり、最新情報は必ず原資料を確認してください。**
+**掲載値は各機関の公表資料を整理したものであり、最新情報・正確な施工区域は必ず原資料を確認してください。**
 
 ## Schema
 
-Phase 2 project dataset schema is `2.0.0` and Phase 2.1 enrichment schema is `2.1.0`.
+Canonical project dataset: `schemaVersion: "2.2.0"`
+
+Phase 2.1 enrichment dataset: `enrichmentSchemaVersion: "2.1.0"`
 
 ```text
-Project current snapshot (2.0.0)
+Project Inventory / Snapshot (2.2.0)
 ├── provenance
 ├── sources
+├── nullable current snapshot
+├── geometryRef / locationAccuracy
 ├── costHistory[]
 ├── scheduleHistory[]
 └── progressHistory[]
         ↓
-Change Detection
+Derived Data Depth + Change Detection
         ↓
+INVENTORY / SNAPSHOT / HISTORY / ENRICHED
 COST± / DELAYED / EARLIER / UPDATED
 
 Project enrichment (2.1.0)
@@ -100,6 +143,7 @@ See:
 - [`docs/data-schema.md`](docs/data-schema.md)
 - [`docs/change-detection.md`](docs/change-detection.md)
 - [`docs/data-enrichment.md`](docs/data-enrichment.md)
+- [`docs/inventory-coverage.md`](docs/inventory-coverage.md)
 - [`docs/adding-projects.md`](docs/adding-projects.md)
 
 ## Architecture
@@ -113,7 +157,7 @@ See:
 - Vitest / ESLint
 - GitHub Actions / GitHub Pages
 
-バックエンド、DB、認証は使用しません。Phase 2.1もstatic JSONを追加するだけで既存アーキテクチャを維持します。
+バックエンド、DB、認証は使用しません。
 
 ## Local Development
 
@@ -128,6 +172,7 @@ npm run dev
 npm run lint
 npm test
 npm run validate
+python3 scripts/report_inventory.py
 npm run build
 ```
 
@@ -137,32 +182,19 @@ npm run build
 npm run check
 ```
 
-ValidatorはPhase 2 historyの型・日付・source参照・時系列順・最新snapshot整合・GeoJSONに加え、Phase 2.1の年度予算basis、累計投資actual/planned、B/C scope/perspective、reason type、source解決、数値範囲を検査します。
-
 ## Deployment
 
 `main` へのpushで `.github/workflows/deploy.yml` がproduction buildを作成し、GitHub Pagesへデプロイします。
 
-GitHub Pages base path:
-
-`/ehime-civil-works-monitor/`
+https://ryotamatsuki.github.io/ehime-civil-works-monitor/
 
 ## Adding and Updating Projects
 
-1. `public/data/projects.json` に現在値を追加・更新
-2. 出典を `sources` に登録
-3. 現在値を `provenance` に紐付け
-4. 比較可能な過去値だけをPhase 2 historyへ時系列順に追加
-5. `public/data/enrichment.json` に年度予算・累計投資・B/C・理由を追加
-6. 各entryを一次資料の `sourceId` に紐付け
-7. 位置を確認できる場合のみGeoJSONへ追加
-8. `npm run validate && npm run lint && npm test && npm run build`
-
-過年度案件の拡張は、案件名だけで追加せず、評価年度ごとのcohort単位で事業同一性・事業範囲・評価手法・位置を確認してから行います。方針は [`docs/data-enrichment.md`](docs/data-enrichment.md) を参照してください。
+Inventory登録から始め、数値・履歴・Enrichmentは一次資料を確認できた段階で追加します。具体的な手順は [`docs/adding-projects.md`](docs/adding-projects.md) を参照してください。
 
 ## Data Disclaimer
 
-本サイトは愛媛県その他の行政機関が運営する公式サイトではありません。`COST+` や `DELAYED` は公表値の差分を示すラベルであり、事業の妥当性・効率性・責任等を評価するものではありません。年度予算、累計投資、B/Cは定義・基準時点・対象範囲を確認した上で表示していますが、最新状況は必ずリンク先の原資料をご確認ください。表示位置には概略点を含みます。
+本サイトは愛媛県その他の行政機関が運営する公式サイトではありません。`COST+` や `DELAYED` は公表値の差分を示すラベルであり、事業の妥当性・効率性・責任等を評価するものではありません。表示位置・概略ルートには近似情報を含みます。
 
 ## License
 

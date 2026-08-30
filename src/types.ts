@@ -1,6 +1,7 @@
-export type ProjectCategory = 'river' | 'coast' | 'sabo' | 'road' | 'urban' | 'agriculture' | 'port';
+export type ProjectCategory = 'river' | 'coast' | 'sabo' | 'road' | 'urban' | 'agriculture' | 'port' | 'dam';
 export type ProjectStatus = 'planned' | 'under_construction' | 'completed' | 'unknown';
 export type LocationAccuracy = 'official' | 'derived' | 'approximate' | 'unknown';
+export type MonitoringLevel = 'inventory' | 'snapshot' | 'history' | 'enriched';
 
 export interface ProjectSource {
   id: string;

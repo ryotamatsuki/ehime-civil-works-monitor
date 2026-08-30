@@ -1,4 +1,6 @@
-import type { ChangeEvent, ChangeType, Project } from './types';
+import type { ChangeEvent, ChangeType, MonitoringLevel, Project } from './types';
+
+export type DepthFilter = '' | 'inventory' | 'snapshot' | 'history' | 'enriched';
 
 export interface ProjectFilters {
   query: string;
@@ -7,10 +9,15 @@ export interface ProjectFilters {
   municipality: string;
   status: string;
   alert?: string;
+  depth?: DepthFilter;
 }
 
 export interface DashboardStats {
   projectCount: number;
+  inventoryCount: number;
+  monitoredCount: number;
+  historyCount: number;
+  enrichedCount: number;
   knownCostCount: number;
   totalKnownCostMillionYen: number;
   statusCounts: Record<string, number>;
@@ -113,19 +120,55 @@ function hasAlert(project: Project, alert: string): boolean {
   return events.some((event) => event.type === alert);
 }
 
-export function filterProjects(projects: Project[], filters: ProjectFilters): Project[] {
+function hasMultiPeriodHistory(project: Project): boolean {
+  return [project.costHistory, project.scheduleHistory, project.progressHistory].some((history) => (history?.length ?? 0) >= 2);
+}
+
+function hasSnapshotData(project: Project): boolean {
+  return [
+    project.startFiscalYear,
+    project.plannedCompletionFiscalYear,
+    project.totalProjectCostMillionYen,
+    project.progressPercent,
+    project.landAcquisitionProgressPercent,
+    project.benefitCostRatio,
+  ].some((value) => value !== null) || [project.costHistory, project.scheduleHistory, project.progressHistory].some((history) => (history?.length ?? 0) > 0);
+}
+
+export function getMonitoringLevel(project: Project, isEnriched = false): MonitoringLevel {
+  if (isEnriched) return 'enriched';
+  if (hasMultiPeriodHistory(project)) return 'history';
+  if (hasSnapshotData(project)) return 'snapshot';
+  return 'inventory';
+}
+
+export function matchesDepthFilter(level: MonitoringLevel, filter: DepthFilter): boolean {
+  if (!filter) return true;
+  if (filter === 'inventory') return level === 'inventory';
+  if (filter === 'snapshot') return level !== 'inventory';
+  if (filter === 'history') return level === 'history' || level === 'enriched';
+  return level === 'enriched';
+}
+
+export function filterProjects(
+  projects: Project[],
+  filters: ProjectFilters,
+  enrichedProjectIds: ReadonlySet<string> = new Set<string>(),
+): Project[] {
   const q = filters.query.trim().toLocaleLowerCase('ja-JP');
   return projects.filter((project) => {
     const haystack = [project.name, project.summary, ...project.municipalities]
       .join(' ')
       .toLocaleLowerCase('ja-JP');
+    const level = getMonitoringLevel(project, enrichedProjectIds.has(project.id));
     return (
       (!q || haystack.includes(q)) &&
       (!filters.category || project.category === filters.category) &&
       (!filters.operator || project.operator === filters.operator) &&
       (!filters.municipality || project.municipalities.includes(filters.municipality)) &&
       (!filters.status || project.status === filters.status) &&
-      hasAlert(project, filters.alert ?? '')
+      hasAlert(project, filters.alert ?? '') &&
+      matchesDepthFilter(level, filters.depth ?? '')
     );
   });
 }
@@ -140,13 +183,22 @@ function changedWithinDays(project: Project, referenceDate: Date, days: number):
   });
 }
 
-export function aggregateProjects(projects: Project[], referenceDate = new Date()): DashboardStats {
+export function aggregateProjects(
+  projects: Project[],
+  referenceDate = new Date(),
+  enrichedProjectIds: ReadonlySet<string> = new Set<string>(),
+): DashboardStats {
   const costs = projects.flatMap((project) =>
     project.totalProjectCostMillionYen === null ? [] : [project.totalProjectCostMillionYen],
   );
   const eventTypes = (project: Project) => new Set(getProjectChangeEvents(project).map((event) => event.type));
+  const levels = projects.map((project) => getMonitoringLevel(project, enrichedProjectIds.has(project.id)));
   return {
     projectCount: projects.length,
+    inventoryCount: levels.filter((level) => level === 'inventory').length,
+    monitoredCount: levels.filter((level) => level !== 'inventory').length,
+    historyCount: levels.filter((level) => level === 'history' || level === 'enriched').length,
+    enrichedCount: levels.filter((level) => level === 'enriched').length,
     knownCostCount: costs.length,
     totalKnownCostMillionYen: costs.reduce((sum, value) => sum + value, 0),
     statusCounts: projects.reduce<Record<string, number>>((acc, project) => {
