@@ -47,7 +47,7 @@ function enrichedIds(enrichment: EnrichmentCollection): Set<string> {
 }
 
 function header(subtitle: string) {
-  return `<header class="site-header"><a class="brand" href="${base}">EHIME CIVIL WORKS MONITOR</a><p>${esc(subtitle)}</p></header>`;
+  return `<header class="site-header"><a class="brand" href="${base}">EHIME CIVIL WORKS MONITOR</a><p>INFRASTRUCTURE OBSERVATORY · ${esc(subtitle)}</p></header>`;
 }
 
 function projectUrl(project: Project) {
@@ -100,11 +100,19 @@ function addLayer(
   return L.geoJSON(featureCollection, {
     pointToLayer: (feature, latlng) => {
       const project = byId.get(String(feature.properties?.projectId ?? ''));
+      const level = project ? getMonitoringLevel(project, ids.has(project.id)) : 'inventory';
+      const eventTypes = project ? new Set(getProjectChangeEvents(project).map((event) => event.type)) : new Set<ChangeEvent['type']>();
+      const size = level === 'enriched' ? 20 : level === 'inventory' ? 14 : 17;
+      const ring = eventTypes.has('cost_increase')
+        ? 'outline:3px solid #c59a50;outline-offset:2px;'
+        : eventTypes.has('delayed')
+          ? 'outline:3px solid #a86159;outline-offset:2px;'
+          : '';
       const icon = L.divIcon({
         className: 'marker-wrap',
-        html: `<span class="marker category-${project?.category ?? 'river'}"></span>`,
-        iconSize: [18, 18],
-        iconAnchor: [9, 9],
+        html: `<span class="marker category-${project?.category ?? 'river'}" style="width:${size}px;height:${size}px;${ring}"></span>`,
+        iconSize: [28, 28],
+        iconAnchor: [14, 14],
       });
       return L.marker(latlng, { icon });
     },
@@ -202,9 +210,8 @@ function home(dataset: ProjectCollection, geojson: FeatureCollection<Geometry>, 
   const categories = new Map(dataset.projects.map((project) => [project.categoryLabel, project.category]));
   const statuses = new Map(dataset.projects.map((project) => [project.statusLabel, project.status]));
   app.innerHTML = `${header('愛媛県内の主要公共事業を広く把握し、確認できた案件は履歴まで追跡します。')}<main>
-    <section class="hero"><div><p class="eyebrow">EHIME CIVIL WORKS INVENTORY</p><h1>愛媛の公共事業を<br>広く、深く追う。</h1><p class="lead">「えひめの土木2026」等の一次資料から主要事業をInventory化し、総事業費・工程・進捗を確認できた案件だけを段階的に履歴・変更検知へ接続する非公式Web GISです。</p></div><aside class="notice"><strong>PHASE 2.2 / 2026-08-31</strong><p>INVENTORYは事業存在・位置・概要を確認した層です。未確認の事業費・完成年度・進捗率は推測せず空欄とし、概略ルートは公式線形を意味しません。</p></aside></section>
+    <section class="hero"><div><p class="eyebrow">EHIME INFRASTRUCTURE OBSERVATORY</p><h1>公共事業の現在地を、<br>地図と変化で読む。</h1><p class="lead">県内50事業を地図で俯瞰し、一次資料で確認できた総事業費・工程・進捗・B/C・履歴を同じ画面で追跡します。値が確認できない案件は推測せずInventoryとして明示します。</p></div><aside class="notice"><strong>PHASE 2.4 · VISUAL SYSTEM / 2026-08-31</strong><p>地図を主役に、Data Depth・変更履歴・一次資料への導線を視覚階層化。概略点・概略ルートは正確な施工区域や公式線形を意味しません。</p></aside></section>
     <div id="dashboard-root">${dashboard(dataset.projects, ids)}</div>
-    <div id="changes-root">${recentChanges(dataset.projects)}</div>
     <section class="workspace"><aside class="filters"><div class="filter-heading"><h2>Filter</h2><button id="reset" type="button">リセット</button></div>
       <label>検索<input id="q" type="search" placeholder="事業名・市町名"></label>
       <label>カテゴリー<select id="category"><option value="">すべて</option>${[...categories].sort().map(([label, value]) => `<option value="${value}">${esc(label)}</option>`).join('')}</select></label>
@@ -214,6 +221,7 @@ function home(dataset: ProjectCollection, geojson: FeatureCollection<Geometry>, 
       <label>Data Depth<select id="depth"><option value="">すべて</option><option value="inventory">Inventory</option><option value="snapshot">Snapshot+</option><option value="history">History+</option><option value="enriched">Enriched</option></select></label>
       <label>変更<select id="alert"><option value="">すべて</option><option value="changed">変更あり</option><option value="cost_increase">COST+ / 増額</option><option value="delayed">DELAYED / 延期</option><option value="progress_updated">PROGRESS UPDATED</option></select></label>
       <p id="count" class="result-count">${dataset.projects.length}件表示</p></aside><div class="map-column"><div id="map" class="main-map"></div><p class="map-note">点・破線ルートには概略位置を含みます。正確な施工区域・線形は各一次資料を確認してください。</p></div></section>
+    <div id="changes-root">${recentChanges(dataset.projects)}</div>
     <section class="project-section"><div class="section-heading"><div><p class="eyebrow">PROJECT INVENTORY</p><h2>事業一覧</h2></div><p>Data Depthは収録できた一次情報の深さを示します。</p></div><div id="project-list" class="project-grid">${dataset.projects.map((project) => card(project, ids)).join('')}</div></section>
   </main><footer><p>非公式サイト。データ出典：愛媛県・国土交通省等の公表資料。</p><p>Map tiles © 国土地理院</p></footer>`;
 
@@ -336,7 +344,14 @@ function detail(project: Project, geojson: FeatureCollection<Geometry>, ids: Rea
   const inventoryNote = getMonitoringLevel(project, ids.has(project.id)) === 'inventory'
     ? '<p class="inventory-detail-note">この案件はInventory層です。存在・位置・概要を一次資料で確認していますが、総事業費・完成年度・進捗率は確認できた資料がないため推測していません。</p>'
     : '';
-  app.innerHTML = `${header('PROJECT DETAIL')}<main class="detail-main"><nav class="breadcrumb"><a href="${base}">← 地図へ戻る</a></nav><section class="detail-hero"><p class="eyebrow">${esc(project.categoryLabel)} · ${esc(project.statusLabel)}</p><div class="detail-depth">${depthBadge(project, ids)}</div>${projectBadges(project)}<h1>${esc(project.name)}</h1><p class="lead">${esc(project.summary)}</p>${inventoryNote}</section><section class="detail-layout"><div class="detail-map-panel"><div id="detail-map" class="detail-map"></div><p class="map-note">位置精度：${esc(project.locationAccuracy)}。${esc(project.locationNote ?? '')}</p></div><dl class="detail-table">${rows}</dl></section>${changeSummary(project)}${historySection(project)}<section class="detail-section"><p class="eyebrow">SCOPE</p><h2>事業概要</h2><p>${esc(project.scope)}</p></section><section class="detail-section sources"><p class="eyebrow">PRIMARY SOURCES</p><h2>情報源</h2><ol>${sources}</ol><p class="source-note">掲載値は各機関の公表資料を整理したものです。最新情報・正確な施工区域は必ず原資料を確認してください。</p></section></main><footer><p>Ehime Civil Works Monitor / unofficial</p></footer>`;
+  const detailEvents = getProjectChangeEvents(project);
+  const latestCostChange = [...detailEvents].reverse().find((event) => event.type === 'cost_increase' || event.type === 'cost_decrease');
+  const latestScheduleChange = [...detailEvents].reverse().find((event) => event.type === 'delayed' || event.type === 'accelerated');
+  const costKpi = project.totalProjectCostMillionYen === null ? '—' : formatMillionYen(project.totalProjectCostMillionYen);
+  const periodKpi = project.plannedCompletionFiscalYear === null ? '—' : `${formatFiscalYear(project.plannedCompletionFiscalYear)}年度`;
+  const progressKpi = project.progressPercent === null ? '—' : `${project.progressPercent}%`;
+  const detailKpis = `<section class="dashboard detail-kpis"><div class="metric"><strong>${costKpi}</strong><span>COST<br>${latestCostChange ? esc(eventValue(latestCostChange)) : 'CURRENT SNAPSHOT'}</span></div><div class="metric"><strong>${periodKpi}</strong><span>COMPLETION<br>${latestScheduleChange ? esc(eventValue(latestScheduleChange)) : 'CURRENT TARGET'}</span></div><div class="metric"><strong>${progressKpi}</strong><span>PROGRESS<br>${project.progressAsOf ? esc(project.progressAsOf) : 'PUBLIC VALUE'}</span></div></section>`;
+  app.innerHTML = `${header('PROJECT DETAIL')}<main class="detail-main"><nav class="breadcrumb"><a href="${base}">← 地図へ戻る</a></nav><section class="detail-hero"><p class="eyebrow">${esc(project.categoryLabel)} · ${esc(project.statusLabel)}</p><div class="detail-depth">${depthBadge(project, ids)}</div>${projectBadges(project)}<h1>${esc(project.name)}</h1><p class="lead">${esc(project.municipalities.join('・'))} · ${esc(project.operator)} · VERIFIED ${esc(project.lastVerified)}</p><p class="lead">${esc(project.summary)}</p>${inventoryNote}</section>${detailKpis}<section class="detail-layout"><div class="detail-map-panel"><div id="detail-map" class="detail-map"></div><p class="map-note">位置精度：${esc(project.locationAccuracy)}。${esc(project.locationNote ?? '')}</p></div><dl class="detail-table">${rows}</dl></section>${changeSummary(project)}${historySection(project)}<section class="detail-section"><p class="eyebrow">SCOPE</p><h2>事業概要</h2><p>${esc(project.scope)}</p></section><section class="detail-section sources"><p class="eyebrow">PRIMARY SOURCES</p><h2>情報源</h2><ol>${sources}</ol><p class="source-note">掲載値は各機関の公表資料を整理したものです。最新情報・正確な施工区域は必ず原資料を確認してください。</p></section></main><footer><p>Ehime Civil Works Monitor / unofficial</p></footer>`;
   const map = mapBase('detail-map', [33.55, 132.75], 9);
   const feature = geojson.features.find((item) => item.properties?.projectId === project.id);
   if (feature) {
