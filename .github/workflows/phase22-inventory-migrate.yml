@@ -1,57 +1,43 @@
-name: Phase 2.2 Inventory Migration
+name: Phase 2.2 Migration Cleanup
 
 on:
   push:
     branches: [feature/phase2-2-project-inventory]
     paths:
-      - scripts/phase22_inventory_migrate.py
       - .github/workflows/phase22-inventory-migrate.yml
 
 permissions:
   contents: write
 
 jobs:
-  migrate:
+  cleanup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: feature/phase2-2-project-inventory
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Apply inventory migration
-        run: python3 scripts/phase22_inventory_migrate.py
-      - name: Normalize Phase 2.2 provenance
+      - name: Tighten schema and remove one-shot migration artifacts
         run: |
           python3 - <<'PY'
-          import json
           from pathlib import Path
-          path = Path('public/data/projects.json')
-          data = json.loads(path.read_text(encoding='utf-8'))
-          for project in data['projects']:
-              if project['id'] in {'matsuyama-outer-ring-airport', 'matsuyama-outer-ring-inter-east'}:
-                  for field in ('startFiscalYear', 'totalProjectCostMillionYen', 'progressPercent'):
-                      if project.get(field) is not None:
-                          project['provenance'][field] = 'source-skr-road-progress-r7'
-          path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          path = Path('scripts/validate_data.py')
+          text = path.read_text(encoding='utf-8')
+          text = text.replace(
+              'SCHEMAS = {"2.0.0", "2.2.0"}  # 2.0 accepted only during the Phase 2.2 branch migration.',
+              'SCHEMAS = {"2.2.0"}',
+          )
+          text = text.replace(
+              'schemaVersion must be 2.0.0 or 2.2.0 during Phase 2.2 migration',
+              'schemaVersion must be 2.2.0 for Phase 2.2',
+          )
+          path.write_text(text, encoding='utf-8')
           PY
-      - run: npm install
-      - run: npm run lint
-      - run: npm test
-      - run: npm run validate
-      - run: npm run build
-      - name: Commit canonical inventory
+          rm -f scripts/phase22_inventory_migrate.py
+          rm -f .github/workflows/phase22-inventory-migrate.yml
+      - name: Commit cleanup
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/data/projects.json public/data/projects.geojson public/data/enrichment.json
-          if git diff --cached --quiet; then
-            echo "No canonical changes to commit"
-          else
-            git commit -m "data: expand Phase 2.2 project inventory"
-            git push origin HEAD:feature/phase2-2-project-inventory
-          fi
+          git add -A scripts/validate_data.py scripts/phase22_inventory_migrate.py .github/workflows/phase22-inventory-migrate.yml
+          git commit -m "chore: remove Phase 2.2 migration artifacts"
+          git push origin HEAD:feature/phase2-2-project-inventory
