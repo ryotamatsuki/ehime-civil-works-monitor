@@ -11,6 +11,50 @@ export interface ProjectSource {
   note?: string;
 }
 
+export interface CostHistoryEntry {
+  asOf: string;
+  fiscalYear: number | null;
+  valueMillionYen: number;
+  sourceId: string;
+  note?: string;
+}
+
+export interface ScheduleHistoryEntry {
+  asOf: string;
+  plannedCompletionFiscalYear: number;
+  sourceId: string;
+  note?: string;
+}
+
+export interface ProgressHistoryEntry {
+  asOf: string;
+  progressPercent: number;
+  sourceId: string;
+  note?: string;
+}
+
+export type ChangeType =
+  | 'cost_increase'
+  | 'cost_decrease'
+  | 'delayed'
+  | 'accelerated'
+  | 'progress_updated';
+
+export type AlertSeverity = 'info' | 'notice' | 'major';
+
+export interface ChangeEvent {
+  projectId: string;
+  type: ChangeType;
+  effectiveDate: string;
+  sourceId: string;
+  previousValue: number;
+  currentValue: number;
+  absoluteChange: number;
+  percentChange?: number;
+  severity: AlertSeverity;
+  note?: string;
+}
+
 export interface Project {
   id: string;
   name: string;
@@ -38,6 +82,9 @@ export interface Project {
   locationNote?: string;
   sources: ProjectSource[];
   provenance: Record<string, string>;
+  costHistory?: CostHistoryEntry[];
+  scheduleHistory?: ScheduleHistoryEntry[];
+  progressHistory?: ProgressHistoryEntry[];
 }
 
 export interface ProjectCollection {
