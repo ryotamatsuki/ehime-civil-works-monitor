@@ -1,0 +1,41 @@
+name: Phase 2.4 Final Polish
+
+on:
+  push:
+    branches:
+      - feature/phase2-4-visual-ux-redesign
+    paths:
+      - .github/workflows/phase24-polish.yml
+
+permissions:
+  contents: write
+
+jobs:
+  polish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/phase2-4-visual-ux-redesign
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Add detail KPI layout rules
+        run: |
+          cat >> src/styles.css <<'CSS'
+          .detail-kpis{grid-template-columns:repeat(3,minmax(0,1fr));margin-top:20px;margin-bottom:0}
+          .detail-kpis .metric:nth-child(3){border-right:0}
+          @media(max-width:720px){.detail-kpis{grid-template-columns:1fr}.detail-kpis .metric{border-right:0;border-bottom:1px solid rgba(255,255,255,.10)}.detail-kpis .metric:last-child{border-bottom:0}}
+          CSS
+      - run: npm install
+      - run: npm run lint
+      - run: npm test
+      - run: npm run validate
+      - run: npm run build
+      - name: Commit polish
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/styles.css
+          git commit -m "design: polish project KPI strip"
+          git push origin HEAD:feature/phase2-4-visual-ux-redesign
