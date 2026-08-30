@@ -1306,11 +1306,51 @@
     },
     {
       "projectId": "toyo-port-improvement",
-      "sources": [],
+      "sources": [
+        {
+          "id": "phase23-toyo-r4",
+          "title": "港湾改修事業（東予港）再評価個表",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/uploaded/attachment/45521.pdf",
+          "accessed": "2026-08-31",
+          "note": "資料上の全体事業費は「約62億円」と表記。"
+        },
+        {
+          "id": "phase23-toyo-r3",
+          "title": "令和3年度 愛媛県公共事業評価委員会 再評価事業一覧表",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/uploaded/attachment/45475.pdf",
+          "accessed": "2026-08-31"
+        }
+      ],
       "annualBudgetHistory": [],
       "cumulativeInvestmentHistory": [],
-      "benefitCostHistory": [],
-      "documentedReasons": []
+      "benefitCostHistory": [
+        {
+          "fiscalYear": 2021,
+          "asOf": "2021-09-06",
+          "value": 1.13,
+          "scope": "project",
+          "perspective": "whole",
+          "sourceId": "phase23-toyo-r3"
+        },
+        {
+          "fiscalYear": 2022,
+          "asOf": "2023-01-19",
+          "value": 1.1,
+          "scope": "project",
+          "perspective": "whole",
+          "sourceId": "phase23-toyo-r4"
+        }
+      ],
+      "documentedReasons": [
+        {
+          "effectiveDate": "2023-01-19",
+          "type": "cost_change",
+          "summary": "資材価格等の高騰、労務単価の上昇、設計基準改訂等を踏まえて事業費を見直し",
+          "sourceId": "phase23-toyo-r4"
+        }
+      ]
     },
     {
       "projectId": "imabari-road",
@@ -1346,18 +1386,70 @@
     },
     {
       "projectId": "asakawa-river",
-      "sources": [],
+      "sources": [
+        {
+          "id": "phase23-asakawa-r5",
+          "title": "二級河川 浅川 広域河川改修事業 再評価個表",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/uploaded/attachment/100919.pdf",
+          "accessed": "2026-08-31"
+        }
+      ],
       "annualBudgetHistory": [],
-      "cumulativeInvestmentHistory": [],
-      "benefitCostHistory": [],
+      "cumulativeInvestmentHistory": [
+        {
+          "fiscalYear": 2022,
+          "asOf": "2023-03-31",
+          "amountMillionYen": 15666,
+          "status": "actual",
+          "sourceId": "phase23-asakawa-r5",
+          "note": "令和4年度末投資事業費。"
+        }
+      ],
+      "benefitCostHistory": [
+        {
+          "fiscalYear": 2023,
+          "asOf": "2023-10-26",
+          "value": 11.46,
+          "scope": "project",
+          "perspective": "whole",
+          "sourceId": "phase23-asakawa-r5"
+        }
+      ],
       "documentedReasons": []
     },
     {
       "projectId": "okawa-river",
-      "sources": [],
+      "sources": [
+        {
+          "id": "phase23-okawa-r5",
+          "title": "二級河川 大川 広域河川改修事業 再評価個表",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/uploaded/attachment/100920.pdf",
+          "accessed": "2026-08-31"
+        }
+      ],
       "annualBudgetHistory": [],
-      "cumulativeInvestmentHistory": [],
-      "benefitCostHistory": [],
+      "cumulativeInvestmentHistory": [
+        {
+          "fiscalYear": 2022,
+          "asOf": "2023-03-31",
+          "amountMillionYen": 5055,
+          "status": "actual",
+          "sourceId": "phase23-okawa-r5",
+          "note": "令和4年度末投資事業費。"
+        }
+      ],
+      "benefitCostHistory": [
+        {
+          "fiscalYear": 2023,
+          "asOf": "2023-10-26",
+          "value": 22.82,
+          "scope": "project",
+          "perspective": "whole",
+          "sourceId": "phase23-okawa-r5"
+        }
+      ],
       "documentedReasons": []
     },
     {
@@ -1370,11 +1462,45 @@
     },
     {
       "projectId": "nakanotani-sabo",
-      "sources": [],
+      "sources": [
+        {
+          "id": "phase23-nakanotani-r5",
+          "title": "通常砂防事業（中ノ谷川）再評価個表",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/uploaded/attachment/100897.pdf",
+          "accessed": "2026-08-31"
+        }
+      ],
       "annualBudgetHistory": [],
-      "cumulativeInvestmentHistory": [],
-      "benefitCostHistory": [],
-      "documentedReasons": []
+      "cumulativeInvestmentHistory": [
+        {
+          "fiscalYear": 2022,
+          "asOf": "2023-03-31",
+          "amountMillionYen": 265,
+          "status": "actual",
+          "sourceId": "phase23-nakanotani-r5",
+          "note": "令和4年度末投資事業費。"
+        }
+      ],
+      "benefitCostHistory": [
+        {
+          "fiscalYear": 2023,
+          "asOf": "2023-10-26",
+          "value": 15.98,
+          "scope": "project",
+          "perspective": "whole",
+          "sourceId": "phase23-nakanotani-r5"
+        }
+      ],
+      "documentedReasons": [
+        {
+          "effectiveDate": "2023-10-26",
+          "type": "delay_context",
+          "summary": "西日本豪雨被災地域への重点投資により当該事業の年間投資額が減少し、2年程度遅延",
+          "sourceId": "phase23-nakanotani-r5",
+          "note": "現在の完成予定年度を別資料で確認できないため、DELAYEDイベントには変換しない。"
+        }
+      ]
     },
     {
       "projectId": "matsuyama-outer-ring-airport",
@@ -1418,11 +1544,45 @@
     },
     {
       "projectId": "hijikawa-interproject-river",
-      "sources": [],
+      "sources": [
+        {
+          "id": "phase23-hijikawa-r5",
+          "title": "事業間連携河川事業（一級河川肱川）再評価個表",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/uploaded/attachment/100886.pdf",
+          "accessed": "2026-08-31"
+        }
+      ],
       "annualBudgetHistory": [],
-      "cumulativeInvestmentHistory": [],
-      "benefitCostHistory": [],
-      "documentedReasons": []
+      "cumulativeInvestmentHistory": [
+        {
+          "fiscalYear": 2022,
+          "asOf": "2023-03-31",
+          "amountMillionYen": 1070,
+          "status": "actual",
+          "sourceId": "phase23-hijikawa-r5",
+          "note": "令和4年度末投資事業費。"
+        }
+      ],
+      "benefitCostHistory": [
+        {
+          "fiscalYear": 2023,
+          "asOf": "2023-10-26",
+          "value": 1.13,
+          "scope": "project",
+          "perspective": "whole",
+          "sourceId": "phase23-hijikawa-r5"
+        }
+      ],
+      "documentedReasons": [
+        {
+          "effectiveDate": "2023-10-26",
+          "type": "cost_change",
+          "summary": "社会経済情勢の急激な変化による全体事業費の増額を理由に再評価",
+          "sourceId": "phase23-hijikawa-r5",
+          "note": "比較可能な直前総事業費を今回確認できていないためCOST+イベントは生成しない。"
+        }
+      ]
     },
     {
       "projectId": "higashikama-sabo",
@@ -1482,10 +1642,36 @@
     },
     {
       "projectId": "yawatahama-road",
-      "sources": [],
+      "sources": [
+        {
+          "id": "phase23-yawatahama-r3",
+          "title": "道路改築事業 一般国道197号 八幡浜道路 再評価個表",
+          "publisher": "愛媛県",
+          "url": "https://www.pref.ehime.jp/uploaded/attachment/45484.pdf",
+          "accessed": "2026-08-31"
+        }
+      ],
       "annualBudgetHistory": [],
-      "cumulativeInvestmentHistory": [],
-      "benefitCostHistory": [],
+      "cumulativeInvestmentHistory": [
+        {
+          "fiscalYear": 2020,
+          "asOf": "2021-03-31",
+          "amountMillionYen": 23070,
+          "status": "actual",
+          "sourceId": "phase23-yawatahama-r3",
+          "note": "令和3年度評価一覧表のR2年度までの事業費。"
+        }
+      ],
+      "benefitCostHistory": [
+        {
+          "fiscalYear": 2021,
+          "asOf": "2021-09-06",
+          "value": 0.53,
+          "scope": "project",
+          "perspective": "whole",
+          "sourceId": "phase23-yawatahama-r3"
+        }
+      ],
       "documentedReasons": []
     },
     {
