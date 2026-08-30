@@ -15,7 +15,7 @@ DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 CATEGORIES = {"river", "coast", "sabo", "road", "urban", "agriculture", "port", "dam"}
 STATUSES = {"planned", "under_construction", "completed", "unknown"}
 LOCATION = {"official", "derived", "approximate", "unknown"}
-SCHEMAS = {"2.0.0", "2.2.0"}  # 2.0 accepted only during the Phase 2.2 branch migration.
+SCHEMAS = {"2.2.0"}
 
 
 def valid_url(value):
@@ -155,7 +155,7 @@ def main():
         return 1
 
     if data.get("schemaVersion") not in SCHEMAS:
-        errors.append("schemaVersion must be 2.0.0 or 2.2.0 during Phase 2.2 migration")
+        errors.append("schemaVersion must be 2.2.0 for Phase 2.2")
 
     projects = data.get("projects")
     if not isinstance(projects, list) or not projects:
