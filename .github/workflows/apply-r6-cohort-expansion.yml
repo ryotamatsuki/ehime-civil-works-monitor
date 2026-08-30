@@ -1,0 +1,34 @@
+name: Apply FY2024 Cohort Expansion
+
+on:
+  push:
+    branches:
+      - feature/phase2-1-r6-cohort-expansion
+    paths:
+      - scripts/expand_r6_cohort.py
+      - .github/workflows/apply-r6-cohort-expansion.yml
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply cohort expansion
+        run: python scripts/expand_r6_cohort.py
+      - name: Validate migrated data
+        run: |
+          python scripts/validate_data.py
+          python scripts/validate_enrichment.py
+      - name: Commit expanded cohort
+        run: |
+          git config user.name "ryotamatsuki"
+          git config user.email "60263857+ryotamatsuki@users.noreply.github.com"
+          git add -A
+          git commit -m "data: complete FY2024 evaluation cohort"
+          git push
