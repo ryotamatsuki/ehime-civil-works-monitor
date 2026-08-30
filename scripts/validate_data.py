@@ -12,7 +12,7 @@ PROJECTS = ROOT / "public/data/projects.json"
 GEOJSON = ROOT / "public/data/projects.geojson"
 ID_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-CATEGORIES = {"river", "coast", "sabo", "road", "urban"}
+CATEGORIES = {"river", "coast", "sabo", "road", "urban", "agriculture", "port"}
 STATUSES = {"planned", "under_construction", "completed", "unknown"}
 LOCATION = {"official", "derived", "approximate", "unknown"}
 

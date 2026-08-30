@@ -1,4 +1,4 @@
-export type ProjectCategory = 'river' | 'coast' | 'sabo' | 'road' | 'urban';
+export type ProjectCategory = 'river' | 'coast' | 'sabo' | 'road' | 'urban' | 'agriculture' | 'port';
 export type ProjectStatus = 'planned' | 'under_construction' | 'completed' | 'unknown';
 export type LocationAccuracy = 'official' | 'derived' | 'approximate' | 'unknown';
 
