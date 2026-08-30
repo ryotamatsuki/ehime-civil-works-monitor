@@ -4,7 +4,7 @@
 
 ## What is this?
 
-Phase 2.2では、深い数値データがある案件だけを掲載する方式から、**Project Inventory → Current Snapshot → History → Change Detection → Enrichment → Primary Sources** という段階構造へ移行しました。
+現在は、**Project Inventory → Current Snapshot → History → Change Detection → Enrichment → Primary Sources** という段階構造で、県内主要事業を広く把握しつつ、一次資料が揃う案件は深く追跡します。
 
 - **Project Inventory**: 事業存在・名称・地域・位置・一次資料を確認できた主要事業を広く掲載
 - **Monitored Project**: 総事業費、完成予定、進捗等を一次資料で確認できた案件を数値監視
@@ -13,6 +13,22 @@ Phase 2.2では、深い数値データがある案件だけを掲載する方�
 - **Enrichment**: 年度予算、累計投資、B/C、一次資料に明記された増額・延期事情を追加
 
 未確認値は推測せず `null` または空配列とします。
+
+## Phase 2.3 — Data Completion
+
+Phase 2.2でInventoryだった17案件を個別の一次資料で再調査し、**13案件をSnapshot以上へ昇格**しました。案件数は50件のまま、Monitored coverageを33→46件へ高めています。
+
+Phase 2.3では特に、次を機械的に読み替えないことを重視します。
+
+- 個別工事・契約額 → 全体事業費
+- 計画期間の開始年度 → 事業採択年度
+- 区間別の工事着手率 → 事業全体の物理進捗率
+- 既に経過した古い完成見込み → 現在の完成予定年度
+- broader projectとdistrict/work packageの数値 → 同一scopeの値
+
+現在のexclusive Data Depthは **Inventory 4 / Snapshot 18 / History 0 / Enriched 28**、`History+` は28、Monitoredは46です。
+
+Phase 2.3の調査結果、昇格案件、意図的にInventoryのまま残した4案件とその理由は [`docs/data-completion.md`](docs/data-completion.md) に記録しています。
 
 ## Phase 2.2 — Project Inventory Expansion
 
@@ -23,7 +39,7 @@ Phase 2.2では、深い数値データがある案件だけを掲載する方�
 
 管内図は、主に事業の存在、名称、カテゴリー、地域、概略位置・ルート、事業中／供用済等の文脈を確認するために使用します。総事業費・完成年度・進捗率は、個別の公式事業資料・再評価資料等で確認できた場合だけ収録します。
 
-現在のcanonical datasetは **50案件** です。Phase 2.2で高信頼に照合できた管内図候補33件について、既存6件を既存IDへreconcileし、新規27件を追加しました。小さく判読・同定できない地図ラベルは推測登録していません。
+canonical datasetは **50案件** です。Phase 2.2で高信頼に照合できた管内図候補33件について、既存6件を既存IDへreconcileし、新規27件を追加しました。小さく判読・同定できない地図ラベルは推測登録していません。
 
 ### Data Depth
 
@@ -34,13 +50,13 @@ Data DepthはJSONに固定保存せず、現在の収録データからderiveし
 - `HISTORY` — Cost / Schedule / Progressの比較可能な複数時点あり
 - `ENRICHED` — 年度予算・累計投資・B/C・documented reasons等あり
 
-現在のexclusive distributionは、Inventory 17 / Snapshot 11 / History 0 / Enriched 22です。Enriched案件にも履歴が含まれるため、UIの `History+` は22案件です。
+Enriched案件にも履歴が含まれるため、exclusive `HISTORY` が0でも履歴データが存在しないという意味ではありません。
 
 ### Geometry
 
 50 GeoJSON featuresの内訳は、Point 40 / LineString 10です。Phase 2.2で追加した路線LineStringはすべて `locationAccuracy: approximate` とし、破線表示します。これは路線の位置関係を把握するための概略ルートであり、公式線形・施工範囲・用地境界ではありません。
 
-詳細なcoverage auditは [`docs/inventory-coverage.md`](docs/inventory-coverage.md) を参照してください。
+Phase 2.2のinventory auditは [`docs/inventory-coverage.md`](docs/inventory-coverage.md) を参照してください。
 
 ## Phase 2.1 — Data Enrichment
 
@@ -70,15 +86,18 @@ Data DepthはJSONに固定保存せず、現在の収録データからderiveし
 | Item | Projects |
 | --- | ---: |
 | Canonical projects | 50 |
-| Monitored (Snapshot / History / Enriched) | 33 |
-| Known total project cost | 32 |
-| Known completion year | 22 |
-| Known progress | 29 |
-| Comparable Cost History (2+) | 7 |
-| Comparable Schedule History (2+) | 7 |
+| Inventory only | 4 |
+| Monitored (Snapshot / History / Enriched) | 46 |
+| Enriched | 28 |
+| Known total project cost | 43 |
+| Known completion year | 32 |
+| Known progress | 33 |
+| Comparable Cost History (2+) | 8 |
+| Comparable Schedule History (2+) | 8 |
 | Comparable Progress History (2+) | 5 |
-| B/C enrichment | 22 |
-| Documented reasons | 11 |
+| Cumulative Investment | 26 |
+| B/C enrichment | 28 |
+| Documented reasons | 14 |
 
 ## Features
 
@@ -90,6 +109,7 @@ Data DepthはJSONに固定保存せず、現在の収録データからderiveし
 - フィールド単位provenance
 - History / EnrichmentのsourceId traceability
 - Python validator
+- reproducible inventory coverage report
 - Vitest / ESLint
 - GitHub Actions / GitHub Pages
 
@@ -107,6 +127,7 @@ Data DepthはJSONに固定保存せず、現在の収録データからderiveし
 10. 概略点・概略ルートは `locationAccuracy: approximate` とし、正確な施工区域のように表示しません。
 11. 類似名称を自動mergeしません。
 12. 各案件・履歴値から一次資料へ戻れることを優先します。
+13. 古い完成見込みや部分区間の進捗指標を、現在の事業全体値へ機械的に読み替えません。
 
 **掲載値は各機関の公表資料を整理したものであり、最新情報・正確な施工区域は必ず原資料を確認してください。**
 
@@ -144,6 +165,7 @@ See:
 - [`docs/change-detection.md`](docs/change-detection.md)
 - [`docs/data-enrichment.md`](docs/data-enrichment.md)
 - [`docs/inventory-coverage.md`](docs/inventory-coverage.md)
+- [`docs/data-completion.md`](docs/data-completion.md)
 - [`docs/adding-projects.md`](docs/adding-projects.md)
 
 ## Architecture
