@@ -12,14 +12,15 @@ PROJECTS = ROOT / "public/data/projects.json"
 GEOJSON = ROOT / "public/data/projects.geojson"
 ID_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-CATEGORIES = {"river", "coast", "sabo", "road", "urban", "agriculture", "port"}
+CATEGORIES = {"river", "coast", "sabo", "road", "urban", "agriculture", "port", "dam"}
 STATUSES = {"planned", "under_construction", "completed", "unknown"}
 LOCATION = {"official", "derived", "approximate", "unknown"}
+SCHEMAS = {"2.0.0", "2.2.0"}  # 2.0 accepted only during the Phase 2.2 branch migration.
 
 
 def valid_url(value):
-    p = urlparse(value)
-    return p.scheme == "https" and bool(p.netloc)
+    p = urlparse(value) if isinstance(value, str) else None
+    return bool(p and p.scheme == "https" and p.netloc)
 
 
 def valid_date(value):
@@ -50,6 +51,14 @@ def check_position(coords, errors, ctx):
         errors.append(f"{ctx}: coordinate outside broad Ehime vicinity")
 
 
+def check_linestring(coords, errors, ctx):
+    if not isinstance(coords, list) or len(coords) < 2:
+        errors.append(f"{ctx}: LineString needs >=2 points")
+        return
+    for i, point in enumerate(coords):
+        check_position(point, errors, f"{ctx}[{i}]")
+
+
 def check_geometry(g, errors, ctx):
     if not isinstance(g, dict):
         errors.append(f"{ctx}: geometry must be object")
@@ -58,11 +67,13 @@ def check_geometry(g, errors, ctx):
     if t == "Point":
         check_position(c, errors, ctx)
     elif t == "LineString":
-        if not isinstance(c, list) or len(c) < 2:
-            errors.append(f"{ctx}: LineString needs >=2 points")
+        check_linestring(c, errors, ctx)
+    elif t == "MultiLineString":
+        if not isinstance(c, list) or not c:
+            errors.append(f"{ctx}: MultiLineString needs >=1 line")
         else:
-            for i, p in enumerate(c):
-                check_position(p, errors, f"{ctx}[{i}]")
+            for i, line in enumerate(c):
+                check_linestring(line, errors, f"{ctx}[{i}]")
     elif t == "Polygon":
         if not isinstance(c, list) or not c:
             errors.append(f"{ctx}: Polygon needs rings")
@@ -71,10 +82,16 @@ def check_geometry(g, errors, ctx):
                 if not isinstance(ring, list) or len(ring) < 4 or ring[0] != ring[-1]:
                     errors.append(f"{ctx}: ring {r} must be closed")
                 else:
-                    for i, p in enumerate(ring):
-                        check_position(p, errors, f"{ctx}[{r}][{i}]")
+                    for i, point in enumerate(ring):
+                        check_position(point, errors, f"{ctx}[{r}][{i}]")
     else:
         errors.append(f"{ctx}: unsupported geometry {t!r}")
+
+
+def normalize_name(value):
+    if not isinstance(value, str):
+        return ""
+    return re.sub(r"[\s　（）()・･\-‐―ー]", "", value).lower()
 
 
 def check_history(p, key, source_ids, errors, value_key, value_validator, latest_snapshot_key):
@@ -110,7 +127,9 @@ def check_history(p, key, source_ids, errors, value_key, value_validator, latest
             errors.append(f"{ectx}: note must be a string")
         if key == "costHistory":
             fiscal_year = entry.get("fiscalYear")
-            if fiscal_year is not None and (not isinstance(fiscal_year, int) or isinstance(fiscal_year, bool) or not 1900 <= fiscal_year <= 2200):
+            if fiscal_year is not None and (
+                not isinstance(fiscal_year, int) or isinstance(fiscal_year, bool) or not 1900 <= fiscal_year <= 2200
+            ):
                 errors.append(f"{ectx}: invalid fiscalYear")
 
     if dates != sorted(dates):
@@ -127,6 +146,7 @@ def check_history(p, key, source_ids, errors, value_key, value_validator, latest
 
 def main():
     errors = []
+    warnings = []
     try:
         data = json.loads(PROJECTS.read_text(encoding="utf-8"))
         geo = json.loads(GEOJSON.read_text(encoding="utf-8"))
@@ -134,8 +154,8 @@ def main():
         print(f"ERROR: cannot parse data: {exc}", file=sys.stderr)
         return 1
 
-    if data.get("schemaVersion") != "2.0.0":
-        errors.append("schemaVersion must be 2.0.0 for Phase 2")
+    if data.get("schemaVersion") not in SCHEMAS:
+        errors.append("schemaVersion must be 2.0.0 or 2.2.0 during Phase 2.2 migration")
 
     projects = data.get("projects")
     if not isinstance(projects, list) or not projects:
@@ -144,6 +164,7 @@ def main():
 
     ids = set()
     refs = set()
+    normalized_names = {}
     required = {
         "id", "name", "category", "categoryLabel", "operator", "department", "municipalities",
         "status", "statusLabel", "lastVerified", "summary", "scope", "sources", "provenance",
@@ -151,6 +172,9 @@ def main():
     }
     for i, p in enumerate(projects):
         ctx = f"projects[{i}]"
+        if not isinstance(p, dict):
+            errors.append(f"{ctx}: must be an object")
+            continue
         for key in required - p.keys():
             errors.append(f"{ctx}: missing {key}")
         pid = p.get("id")
@@ -160,28 +184,50 @@ def main():
             errors.append(f"{ctx}: duplicate id {pid}")
         else:
             ids.add(pid)
+        name_key = normalize_name(p.get("name"))
+        if name_key:
+            if name_key in normalized_names:
+                warnings.append(
+                    f"{ctx}: normalized project name resembles {normalized_names[name_key]}: {p.get('name')}"
+                )
+            else:
+                normalized_names[name_key] = pid
         if p.get("category") not in CATEGORIES:
             errors.append(f"{ctx}: invalid category")
         if p.get("status") not in STATUSES:
             errors.append(f"{ctx}: invalid status")
         if p.get("locationAccuracy") not in LOCATION:
             errors.append(f"{ctx}: invalid locationAccuracy")
+        if not isinstance(p.get("operator"), str) or not p.get("operator").strip():
+            errors.append(f"{ctx}: operator required")
+        if not isinstance(p.get("department"), str):
+            errors.append(f"{ctx}: department must be string")
         if not isinstance(p.get("municipalities"), list) or not p.get("municipalities"):
             errors.append(f"{ctx}: municipalities required")
         for key in ("startFiscalYear", "plannedCompletionFiscalYear"):
-            v = p.get(key)
-            if v is not None and (not isinstance(v, int) or isinstance(v, bool) or not 1900 <= v <= 2200):
+            value = p.get(key)
+            if value is not None and (
+                not isinstance(value, int) or isinstance(value, bool) or not 1900 <= value <= 2200
+            ):
                 errors.append(f"{ctx}: invalid {key}")
-        if isinstance(p.get("startFiscalYear"), int) and isinstance(p.get("plannedCompletionFiscalYear"), int) and p["plannedCompletionFiscalYear"] < p["startFiscalYear"]:
+        if (
+            isinstance(p.get("startFiscalYear"), int)
+            and isinstance(p.get("plannedCompletionFiscalYear"), int)
+            and p["plannedCompletionFiscalYear"] < p["startFiscalYear"]
+        ):
             errors.append(f"{ctx}: completion before start")
         for key in ("totalProjectCostMillionYen", "currentFiscalYearBudgetMillionYen"):
-            v = p.get(key)
-            if v is not None and (not finite_number(v) or v < 0):
+            value = p.get(key)
+            if value is not None and (not finite_number(value) or value < 0):
                 errors.append(f"{ctx}: invalid {key}")
         for key in ("progressPercent", "landAcquisitionProgressPercent"):
-            v = p.get(key)
-            if v is not None and (not finite_number(v) or not 0 <= v <= 100):
+            value = p.get(key)
+            if value is not None and (not finite_number(value) or not 0 <= value <= 100):
                 errors.append(f"{ctx}: invalid {key}")
+        if p.get("benefitCostRatio") is not None and (
+            not finite_number(p.get("benefitCostRatio")) or p.get("benefitCostRatio") < 0
+        ):
+            errors.append(f"{ctx}: invalid benefitCostRatio")
         if not valid_date(p.get("lastVerified")):
             errors.append(f"{ctx}: invalid lastVerified")
         sources = p.get("sources", [])
@@ -189,18 +235,21 @@ def main():
             errors.append(f"{ctx}: source required")
             sources = []
         source_ids = set()
-        for j, s in enumerate(sources):
-            sid = s.get("id")
+        for j, source in enumerate(sources):
             sctx = f"{ctx}.sources[{j}]"
+            if not isinstance(source, dict):
+                errors.append(f"{sctx}: must be object")
+                continue
+            sid = source.get("id")
             if not isinstance(sid, str) or not sid:
                 errors.append(f"{sctx}: id required")
             elif sid in source_ids:
                 errors.append(f"{sctx}: duplicate id")
             else:
                 source_ids.add(sid)
-            if not valid_url(s.get("url", "")):
+            if not valid_url(source.get("url", "")):
                 errors.append(f"{sctx}: invalid https URL")
-            if not valid_date(s.get("accessed")):
+            if not valid_date(source.get("accessed")):
                 errors.append(f"{sctx}: invalid accessed")
         provenance = p.get("provenance", {})
         if not isinstance(provenance, dict):
@@ -218,17 +267,17 @@ def main():
 
         check_history(
             p, "costHistory", source_ids, errors, "valueMillionYen",
-            lambda v: finite_number(v) and v >= 0,
+            lambda value: finite_number(value) and value >= 0,
             "totalProjectCostMillionYen"
         )
         check_history(
             p, "scheduleHistory", source_ids, errors, "plannedCompletionFiscalYear",
-            lambda v: isinstance(v, int) and not isinstance(v, bool) and 1900 <= v <= 2200,
+            lambda value: isinstance(value, int) and not isinstance(value, bool) and 1900 <= value <= 2200,
             "plannedCompletionFiscalYear"
         )
         check_history(
             p, "progressHistory", source_ids, errors, "progressPercent",
-            lambda v: finite_number(v) and 0 <= v <= 100,
+            lambda value: finite_number(value) and 0 <= value <= 100,
             "progressPercent"
         )
 
@@ -238,25 +287,33 @@ def main():
     else:
         features = geo["features"]
     feature_ids = set()
-    for i, f in enumerate(features):
+    for i, feature in enumerate(features):
         ctx = f"geojson.features[{i}]"
-        pid = f.get("properties", {}).get("projectId")
+        if not isinstance(feature, dict):
+            errors.append(f"{ctx}: feature must be object")
+            continue
+        pid = feature.get("properties", {}).get("projectId")
         if pid not in ids:
             errors.append(f"{ctx}: unknown projectId")
         elif pid in feature_ids:
             errors.append(f"{ctx}: duplicate project geometry")
         else:
             feature_ids.add(pid)
-        check_geometry(f.get("geometry"), errors, ctx)
+        check_geometry(feature.get("geometry"), errors, ctx)
     if refs - feature_ids:
         errors.append("Missing GeoJSON: " + ", ".join(sorted(refs - feature_ids)))
 
+    for warning in warnings:
+        print("WARNING: " + warning, file=sys.stderr)
     if errors:
         print("Data validation failed:", file=sys.stderr)
-        for e in errors:
-            print(" - " + e, file=sys.stderr)
+        for error in errors:
+            print(" - " + error, file=sys.stderr)
         return 1
-    print(f"Data validation OK: {len(projects)} projects, {len(features)} GeoJSON features, schema {data.get('schemaVersion')}")
+    print(
+        f"Data validation OK: {len(projects)} projects, {len(features)} GeoJSON features, "
+        f"schema {data.get('schemaVersion')}"
+    )
     return 0
 
 
