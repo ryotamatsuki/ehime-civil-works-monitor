@@ -35,7 +35,7 @@ function budgetBasisLabel(entry: AnnualBudgetEntry) {
 }
 
 function annualBudget(record: ProjectEnrichmentRecord) {
-  if (!record.annualBudgetHistory.length) return '<p class="enrichment-empty">案件単位で比較可能な年度予算は未確認です。</p>';
+  if (!record.annualBudgetHistory.length) return '<p class="enrichment-empty">この従来Enrichment層には追加の年度予算記録はありません。R5～R8の体系的な年度比較はPhase 2.5の「年度別予算・配分」を参照してください。</p>';
   return `<ol class="enrichment-list">${record.annualBudgetHistory.map((entry) => `
     <li class="enrichment-row">
       <div class="enrichment-row-head"><strong>${formatFiscalYear(entry.fiscalYear)}年度 · ${formatMillionYen(entry.amountMillionYen)}</strong><time>${esc(entry.asOf)}</time></div>
@@ -104,11 +104,11 @@ function renderHome(enrichment: EnrichmentCollection) {
   section.innerHTML = `
     <div class="enrichment-summary-head">
       <div><p class="eyebrow">PHASE 2.1 · DATA ENRICHMENT</p><h2>一次資料を、もう一段深く。</h2></div>
-      <p>年度予算・累計投資・B/C・文書化された増額／延期事情を、元資料へ戻れる形で追加しています。</p>
+      <p>累計投資・B/C・文書化された増額／延期事情に加え、従来から確認済みの年度予算値を元資料へ戻れる形で保持しています。R5～R8の体系的な年度比較はPhase 2.5で扱います。</p>
     </div>
     <div class="enrichment-metrics">
       <div class="enrichment-metric"><strong>${stats.enrichedProjectCount}</strong><span>ENRICHED<br>深掘り済み案件</span></div>
-      <div class="enrichment-metric"><strong>${stats.annualBudgetProjectCount}</strong><span>ANNUAL BUDGET<br>年度予算確認</span></div>
+      <div class="enrichment-metric"><strong>${stats.annualBudgetProjectCount}</strong><span>LEGACY BUDGET<br>従来確認済み値</span></div>
       <div class="enrichment-metric"><strong>${stats.cumulativeInvestmentProjectCount}</strong><span>INVESTMENT<br>累計投資確認</span></div>
       <div class="enrichment-metric"><strong>${stats.multiPeriodBenefitCostProjectCount}</strong><span>B/C HISTORY<br>複数時点比較</span></div>
       <div class="enrichment-metric"><strong>${stats.documentedReasonProjectCount}</strong><span>REASONS<br>理由・事情確認</span></div>
@@ -125,10 +125,10 @@ function renderDetail(record: ProjectEnrichmentRecord) {
   section.className = 'detail-section detail-wide enrichment-detail';
   section.innerHTML = `
     <p class="eyebrow">PHASE 2.1 · DATA ENRICHMENT</p>
-    <h2>予算・投資・評価の深掘り</h2>
-    <p class="enrichment-intro">全体事業費とは別に、案件単位の年度予算、累計投資事業費、B/Cの評価条件、一次資料に明記された増額・延期事情を整理しています。年度末見込値は「実績」と分離しています。</p>
+    <h2>投資・評価の深掘り</h2>
+    <p class="enrichment-intro">全体事業費とは別に、従来から確認済みの年度予算値、累計投資事業費、B/Cの評価条件、一次資料に明記された増額・延期事情を整理しています。R5～R8の体系的な年度予算比較はPhase 2.5に分離しています。</p>
     <div class="enrichment-grid">
-      <article class="enrichment-panel"><div class="enrichment-panel-head"><h3>Annual Budget</h3><span class="enrichment-kicker">年度予算・配分</span></div>${annualBudget(record)}</article>
+      <article class="enrichment-panel"><div class="enrichment-panel-head"><h3>Legacy Budget</h3><span class="enrichment-kicker">従来確認済み値</span></div>${annualBudget(record)}</article>
       <article class="enrichment-panel"><div class="enrichment-panel-head"><h3>Cumulative Investment</h3><span class="enrichment-kicker">累計投資事業費</span></div>${cumulativeInvestment(record)}</article>
       <article class="enrichment-panel"><div class="enrichment-panel-head"><h3>B/C History</h3><span class="enrichment-kicker">対象範囲を分離</span></div>${benefitCost(record)}</article>
       <article class="enrichment-panel"><div class="enrichment-panel-head"><h3>Documented Reasons</h3><span class="enrichment-kicker">一次資料に明記された内容のみ</span></div>${documentedReasons(record)}</article>

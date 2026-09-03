@@ -8,8 +8,9 @@
     "lint": "eslint .",
     "test": "vitest run",
     "build": "vite build && node scripts/generate-detail-pages.mjs",
-    "validate": "python3 scripts/validate_data.py && python3 scripts/validate_enrichment.py",
-    "check": "npm run lint && npm test && npm run validate && npm run build"
+    "validate": "python3 scripts/validate_data.py && python3 scripts/validate_enrichment.py && python3 scripts/validate_annual_budget.py",
+    "report:budget": "python3 scripts/report_annual_budget.py",
+    "check": "npm run lint && npm test && npm run validate && npm run report:budget && npm run build"
   },
   "dependencies": {
     "leaflet": "^1.9.4"
