@@ -1,0 +1,20 @@
+{
+  "excludedExistingRoadIds": [
+    {
+      "candidateId": "matsuyama-outer-airport-line",
+      "existingProjectId": "matsuyama-outer-ring-airport",
+      "reason": "道路整備プログラムの一般国道56号 松山外環状道路空港線は既存canonical Projectと同一identityのため重複追加しない。"
+    }
+  ],
+  "roadAdditions": [
+    [
+      "kamibun-mishima-mishima-chuo",
+      "道路改築事業（一般県道上分三島線 三島中央）",
+      "愛媛県",
+      ["四国中央市"],
+      2022,
+      2026,
+      "0.5km"
+    ]
+  ]
+}
