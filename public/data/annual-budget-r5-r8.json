@@ -1,10 +1,15 @@
 {
-  "schemaVersion": "2.4.0",
+  "schemaVersion": "2.5.0",
   "generatedAt": "2026-09-03",
-  "targetFiscalYears": [2023, 2024, 2025, 2026],
-  "dataPolicy": "R5-R8の年度予算・配分は、案件名と金額が一次資料で直接対応し、canonical projectとscopeが一致する場合のみ収録する。予算事業全体額、契約額、総事業費、累計投資額を案件年度予算へ読み替えない。確認できない年度は0ではなく未確認とする。",
+  "targetFiscalYears": [
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "dataPolicy": "R5-R8の年度予算・配分は、案件名と金額が一次資料で直接対応し、canonical projectとscopeが一致する場合のみ収録する。予算事業全体額、契約額、総事業費、累計投資額を案件年度予算へ読み替えない。当初・補正・国の配分などbasis/budgetStageが異なる観測は別系列とし、自動合算しない。確認できない年度は0ではなく未確認とする。",
   "defaultUnresolvedStatus": "SOURCE_NOT_FOUND",
-  "defaultUnresolvedNote": "Phase 2.4で確認したR5-R8主要予算・配分資料からcanonical案件へ直接帰属できる金額を確認できていない。予算ゼロを意味せず、より詳細な箇所表・配分資料で確認できる可能性がある。",
+  "defaultUnresolvedNote": "Phase 2.5のR5-R8主要予算・配分資料でcanonical案件へ直接帰属できる金額を確認できていない。予算ゼロを意味しない。",
   "sources": [
     {
       "id": "r5-important-proposals",
@@ -14,7 +19,7 @@
       "accessed": "2026-09-03",
       "fiscalYear": 2023,
       "budgetStage": "allocation",
-      "locator": "p.19 大洲・八幡浜自動車道『夜昼道路』『大洲西道路』の整備促進"
+      "locator": "pp.18-19 高規格道路の整備推進、p.9 肱川緊急治水対策"
     },
     {
       "id": "r6-important-proposals",
@@ -24,7 +29,7 @@
       "accessed": "2026-09-03",
       "fiscalYear": 2024,
       "budgetStage": "allocation",
-      "locator": "p.14 大洲・八幡浜自動車道『夜昼道路』『大洲西道路』"
+      "locator": "pp.12-13 高規格道路の整備推進、ダム事業"
     },
     {
       "id": "r7-important-proposals",
@@ -34,7 +39,57 @@
       "accessed": "2026-09-03",
       "fiscalYear": 2025,
       "budgetStage": "allocation",
-      "locator": "p.20 高規格道路の整備推進について"
+      "locator": "pp.9,20 高規格道路・肱川緊急治水対策"
+    },
+    {
+      "id": "r8-important-proposals",
+      "title": "令和8年度重要施策提案・要望 政府予算案反映状況調書",
+      "publisher": "愛媛県",
+      "url": "https://www.pref.ehime.jp/uploaded/attachment/180777.pdf",
+      "accessed": "2026-09-03",
+      "fiscalYear": 2026,
+      "budgetStage": "allocation",
+      "locator": "pp.25-27 肱川緊急治水対策・高規格道路の整備推進"
+    },
+    {
+      "id": "r5-jr-initial",
+      "title": "令和5年度当初予算（案） JR松山駅付近連続立体交差事業費",
+      "publisher": "愛媛県",
+      "url": "https://www.pref.ehime.jp/uploaded/attachment/49083.pdf",
+      "accessed": "2026-09-03",
+      "fiscalYear": 2023,
+      "budgetStage": "initial",
+      "locator": "予算額・R5年度事業費"
+    },
+    {
+      "id": "r7-department-initial",
+      "title": "令和7年度当初予算（案）の部局別事業一覧（土木部）",
+      "publisher": "愛媛県",
+      "url": "https://www.pref.ehime.jp/uploaded/attachment/138990.pdf",
+      "accessed": "2026-09-03",
+      "fiscalYear": 2025,
+      "budgetStage": "initial",
+      "locator": "都市整備課 JR松山駅付近連続立体交差事業費（本年度・前年度当初予算額）"
+    },
+    {
+      "id": "r7-june-department",
+      "title": "令和7年度6月補正予算（案）の部局別事業一覧（土木部）",
+      "publisher": "愛媛県",
+      "url": "https://www.pref.ehime.jp/uploaded/attachment/148846.pdf",
+      "accessed": "2026-09-03",
+      "fiscalYear": 2025,
+      "budgetStage": "supplementary",
+      "locator": "JR松山駅付近連続立体交差事業費"
+    },
+    {
+      "id": "r8-department-initial",
+      "title": "令和8年度当初予算（案）の部局別事業一覧（土木部）",
+      "publisher": "愛媛県",
+      "url": "https://www.pref.ehime.jp/uploaded/attachment/170546.pdf",
+      "accessed": "2026-09-03",
+      "fiscalYear": 2026,
+      "budgetStage": "initial",
+      "locator": "都市整備課 JR松山駅付近連続立体交差事業費（本年度・前年度当初予算額）"
     },
     {
       "id": "r8-initial-civil-works-pr",
@@ -49,50 +104,40 @@
   ],
   "records": [
     {
-      "projectId": "yohiru-road",
-      "auditStatus": "CONFIRMED_PROJECT_BUDGET",
-      "observations": [
-        {
-          "fiscalYear": 2023,
-          "asOf": "2023-04-01",
-          "amountMillionYen": 661,
-          "basis": "project_allocation",
-          "budgetStage": "allocation",
-          "scope": "project",
-          "sourceId": "r5-important-proposals",
-          "note": "用地買収、道路改良工事等の費用として配分された事業費。"
-        },
-        {
-          "fiscalYear": 2024,
-          "asOf": "2024-04-01",
-          "amountMillionYen": 793,
-          "basis": "project_allocation",
-          "budgetStage": "allocation",
-          "scope": "project",
-          "sourceId": "r6-important-proposals",
-          "note": "用地買収、道路改良工事等の費用として配分された事業費。"
-        },
-        {
-          "fiscalYear": 2025,
-          "asOf": "2025-04-01",
-          "amountMillionYen": 814,
-          "basis": "project_allocation",
-          "budgetStage": "allocation",
-          "scope": "project",
-          "sourceId": "r7-important-proposals",
-          "note": "橋梁工事、改良工事の費用として配分された事業費。"
-        },
-        {
-          "fiscalYear": 2026,
-          "asOf": "2026-02-10",
-          "amountMillionYen": 1156.842,
-          "basis": "project_allocation",
-          "budgetStage": "initial",
-          "scope": "project",
-          "sourceId": "r8-initial-civil-works-pr",
-          "note": "令和8年度当初予算案の工区別事業計画に明記された夜昼道路の事業費。トンネル工、橋梁上部工・下部工、用地補償。"
-        }
-      ]
+      "projectId": "tachima-kuniyasu-kawachi-river",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "narubae-coast-tsunami",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "takahama-2-sabo",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "kameyamagawa-sabo",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "kobutani-sabo",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "uedani-slope",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
     },
     {
       "projectId": "ozu-west-road",
@@ -130,13 +175,671 @@
         },
         {
           "fiscalYear": 2026,
+          "asOf": "2026-04-01",
+          "amountMillionYen": 340,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r8-important-proposals",
+          "note": "用地買収、改良工事の費用として配分された事業費。"
+        },
+        {
+          "fiscalYear": 2026,
           "asOf": "2026-02-10",
           "amountMillionYen": 57.894,
-          "basis": "project_allocation",
+          "basis": "prefectural_budget",
           "budgetStage": "initial",
           "scope": "project",
           "sourceId": "r8-initial-civil-works-pr",
-          "note": "令和8年度当初予算案の工区別事業計画に明記された大洲西道路の事業費。橋梁下部工、用地調査。"
+          "note": "県の令和8年度当初予算案における大洲西道路の工区別事業費。国の配分額340百万円とは別系列であり合算しない。"
+        }
+      ]
+    },
+    {
+      "projectId": "yohiru-road",
+      "auditStatus": "CONFIRMED_PROJECT_BUDGET",
+      "observations": [
+        {
+          "fiscalYear": 2023,
+          "asOf": "2023-04-01",
+          "amountMillionYen": 661,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r5-important-proposals",
+          "note": "用地買収、道路改良工事等の費用として配分された事業費。"
+        },
+        {
+          "fiscalYear": 2024,
+          "asOf": "2024-04-01",
+          "amountMillionYen": 793,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r6-important-proposals",
+          "note": "用地買収、道路改良工事等の費用として配分された事業費。"
+        },
+        {
+          "fiscalYear": 2025,
+          "asOf": "2025-04-01",
+          "amountMillionYen": 814,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r7-important-proposals",
+          "note": "橋梁工事、改良工事の費用として配分された事業費。"
+        },
+        {
+          "fiscalYear": 2026,
+          "asOf": "2026-04-01",
+          "amountMillionYen": 814,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r8-important-proposals",
+          "note": "橋梁工事、改良工事の費用として配分された事業費。"
+        },
+        {
+          "fiscalYear": 2026,
+          "asOf": "2026-02-10",
+          "amountMillionYen": 1156.842,
+          "basis": "prefectural_budget",
+          "budgetStage": "initial",
+          "scope": "project",
+          "sourceId": "r8-initial-civil-works-pr",
+          "note": "県の令和8年度当初予算案における夜昼道路の工区別事業費。国の配分額814百万円とは別系列であり合算しない。"
+        }
+      ]
+    },
+    {
+      "projectId": "jr-matsuyama-grade-separation",
+      "auditStatus": "CONFIRMED_PROJECT_BUDGET",
+      "observations": [
+        {
+          "fiscalYear": 2023,
+          "asOf": "2023-04-01",
+          "amountMillionYen": 6847.734,
+          "basis": "prefectural_budget",
+          "budgetStage": "initial",
+          "scope": "project",
+          "sourceId": "r5-jr-initial",
+          "note": "県の令和5年度当初予算額。"
+        },
+        {
+          "fiscalYear": 2024,
+          "asOf": "2024-04-01",
+          "amountMillionYen": 1909.529,
+          "basis": "prefectural_budget",
+          "budgetStage": "initial",
+          "scope": "project",
+          "sourceId": "r7-department-initial",
+          "note": "令和7年度部局別事業一覧の前年度当初予算額から確認した令和6年度当初予算額。"
+        },
+        {
+          "fiscalYear": 2025,
+          "asOf": "2025-04-01",
+          "amountMillionYen": 356.11,
+          "basis": "prefectural_budget",
+          "budgetStage": "initial",
+          "scope": "project",
+          "sourceId": "r7-department-initial",
+          "note": "県の令和7年度当初予算額。"
+        },
+        {
+          "fiscalYear": 2025,
+          "asOf": "2025-06-06",
+          "amountMillionYen": 411,
+          "basis": "prefectural_budget",
+          "budgetStage": "supplementary",
+          "scope": "project",
+          "sourceId": "r7-june-department",
+          "note": "令和7年度6月補正の純増額。既定予算額356.110百万円に機械的に合算した年度総額は保存しない。"
+        },
+        {
+          "fiscalYear": 2026,
+          "asOf": "2026-02-10",
+          "amountMillionYen": 1065.6,
+          "basis": "prefectural_budget",
+          "budgetStage": "initial",
+          "scope": "project",
+          "sourceId": "r8-department-initial",
+          "note": "県の令和8年度当初予算額。"
+        }
+      ]
+    },
+    {
+      "projectId": "uchihira-river",
+      "auditStatus": "SOURCE_NOT_FOUND",
+      "observations": [],
+      "note": "Phase 2.5のR5-R8主要予算・配分資料のbaseline auditでは、canonical案件へ直接帰属する金額を確認できていない。予算ゼロを意味しない。"
+    },
+    {
+      "projectId": "sanaki-widening",
+      "auditStatus": "SOURCE_NOT_FOUND",
+      "observations": [],
+      "note": "Phase 2.5のR5-R8主要予算・配分資料のbaseline auditでは、canonical案件へ直接帰属する金額を確認できていない。予算ゼロを意味しない。"
+    },
+    {
+      "projectId": "nishimachi-nakamura-street",
+      "auditStatus": "SOURCE_NOT_FOUND",
+      "observations": [],
+      "note": "Phase 2.5のR5-R8主要予算・配分資料のbaseline auditでは、canonical案件へ直接帰属する金額を確認できていない。予算ゼロを意味しない。"
+    },
+    {
+      "projectId": "nada-irrigation",
+      "auditStatus": "SOURCE_NOT_FOUND",
+      "observations": [],
+      "note": "Phase 2.5のR5-R8主要予算・配分資料のbaseline auditでは、canonical案件へ直接帰属する金額を確認できていない。予算ゼロを意味しない。"
+    },
+    {
+      "projectId": "yoshida-irrigation",
+      "auditStatus": "SOURCE_NOT_FOUND",
+      "observations": [],
+      "note": "Phase 2.5のR5-R8主要予算・配分資料のbaseline auditでは、canonical案件へ直接帰属する金額を確認できていない。予算ゼロを意味しない。"
+    },
+    {
+      "projectId": "seritani-sabo",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "ohiragawa-sabo",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "furonookugawa-sabo",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "nanatsugawa-sabo",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "koguchi-higashi-slope",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "uchihiragatani-river",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "uwajima-port-oura",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "yogo-kita-yoshida-street",
+      "auditStatus": "SOURCE_NOT_FOUND",
+      "observations": [],
+      "note": "Phase 2.5のR5-R8主要予算・配分資料のbaseline auditでは、canonical案件へ直接帰属する金額を確認できていない。予算ゼロを意味しない。"
+    },
+    {
+      "projectId": "izumi-housing-regeneration",
+      "auditStatus": "SOURCE_NOT_FOUND",
+      "observations": [],
+      "note": "Phase 2.5のR5-R8主要予算・配分資料のbaseline auditでは、canonical案件へ直接帰属する金額を確認できていない。予算ゼロを意味しない。"
+    },
+    {
+      "projectId": "iwagi-bridge",
+      "auditStatus": "SOURCE_NOT_FOUND",
+      "observations": [],
+      "note": "Phase 2.5のR5-R8主要予算・配分資料のbaseline auditでは、canonical案件へ直接帰属する金額を確認できていない。予算ゼロを意味しない。"
+    },
+    {
+      "projectId": "toyo-port-improvement",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "imabari-road",
+      "auditStatus": "CONFIRMED_PROJECT_BUDGET",
+      "observations": [
+        {
+          "fiscalYear": 2023,
+          "asOf": "2023-04-01",
+          "amountMillionYen": 1842,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r5-important-proposals",
+          "note": "調査、用地買収、改良工事、橋梁工事の費用として配分。"
+        },
+        {
+          "fiscalYear": 2024,
+          "asOf": "2024-04-01",
+          "amountMillionYen": 2940,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r6-important-proposals",
+          "note": "調査、用地買収、改良工事、橋梁工事の費用として配分。"
+        },
+        {
+          "fiscalYear": 2025,
+          "asOf": "2025-04-01",
+          "amountMillionYen": 3519,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r7-important-proposals",
+          "note": "調査、用地買収、改良工事、橋梁工事の費用として配分。"
+        },
+        {
+          "fiscalYear": 2026,
+          "asOf": "2026-04-01",
+          "amountMillionYen": 2953,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r8-important-proposals",
+          "note": "調査設計、改良工事、橋梁工事の費用として配分。"
+        }
+      ]
+    },
+    {
+      "projectId": "mishima-kawanoe-kaneko-roro",
+      "auditStatus": "SOURCE_NOT_FOUND",
+      "observations": [],
+      "note": "Phase 2.5のR5-R8主要予算・配分資料のbaseline auditでは、canonical案件へ直接帰属する金額を確認できていない。予算ゼロを意味しない。"
+    },
+    {
+      "projectId": "sakaidani-river",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "sawazu-slope",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "asakawa-river",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "okawa-river",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "matsuyama-port-improvement",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "nakanotani-sabo",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "matsuyama-outer-ring-airport",
+      "auditStatus": "CONFIRMED_PROJECT_BUDGET",
+      "observations": [
+        {
+          "fiscalYear": 2023,
+          "asOf": "2023-04-01",
+          "amountMillionYen": 3962,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r5-important-proposals",
+          "note": "調査、用地補償及び橋梁工事の費用として配分。"
+        },
+        {
+          "fiscalYear": 2024,
+          "asOf": "2024-04-01",
+          "amountMillionYen": 2279,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r6-important-proposals",
+          "note": "調査、用地補償及び橋梁工事の費用として配分。"
+        },
+        {
+          "fiscalYear": 2025,
+          "asOf": "2025-04-01",
+          "amountMillionYen": 1984,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r7-important-proposals",
+          "note": "調査、用地補償、橋梁工事の費用として配分。"
+        },
+        {
+          "fiscalYear": 2026,
+          "asOf": "2026-04-01",
+          "amountMillionYen": 1070,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r8-important-proposals",
+          "note": "調査設計、用地補償、改良工事及び橋梁工事の費用として配分。"
+        }
+      ]
+    },
+    {
+      "projectId": "matsuyama-expressway-four-lane",
+      "auditStatus": "SOURCE_NOT_FOUND",
+      "observations": [],
+      "note": "Phase 2.5のR5-R8主要予算・配分資料のbaseline auditでは、canonical案件へ直接帰属する金額を確認できていない。予算ゼロを意味しない。"
+    },
+    {
+      "projectId": "hijikawa-nomura-major-river",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "nomura-bridge",
+      "auditStatus": "SOURCE_NOT_FOUND",
+      "observations": [],
+      "note": "Phase 2.5のR5-R8主要予算・配分資料のbaseline auditでは、canonical案件へ直接帰属する金額を確認できていない。予算ゼロを意味しない。"
+    },
+    {
+      "projectId": "tsushima-road",
+      "auditStatus": "CONFIRMED_PROJECT_BUDGET",
+      "observations": [
+        {
+          "fiscalYear": 2023,
+          "asOf": "2023-04-01",
+          "amountMillionYen": 4570,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r5-important-proposals",
+          "note": "調査設計、用地買収、改良工事、トンネル工事の費用として配分。"
+        },
+        {
+          "fiscalYear": 2024,
+          "asOf": "2024-04-01",
+          "amountMillionYen": 4658,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r6-important-proposals",
+          "note": "調査設計、用地買収、改良工事、トンネル工事の費用として配分。"
+        },
+        {
+          "fiscalYear": 2025,
+          "asOf": "2025-04-01",
+          "amountMillionYen": 4343,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r7-important-proposals",
+          "note": "調査設計、用地買収、改良工事、トンネル工事等の費用として配分。"
+        },
+        {
+          "fiscalYear": 2026,
+          "asOf": "2026-04-01",
+          "amountMillionYen": 4343,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r8-important-proposals",
+          "note": "調査設計、用地買収、改良工事、トンネル工事及び橋梁工事の費用として配分。"
+        }
+      ]
+    },
+    {
+      "projectId": "hijikawa-interproject-river",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "higashikama-sabo",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "tsuwai-landslide",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "tsubasa-bridge",
+      "auditStatus": "SOURCE_NOT_FOUND",
+      "observations": [],
+      "note": "Phase 2.5のR5-R8主要予算・配分資料のbaseline auditでは、canonical案件へ直接帰属する金額を確認できていない。予算ゼロを意味しない。"
+    },
+    {
+      "projectId": "kitayamazaki-coast",
+      "auditStatus": "BROADER_PROGRAM_ONLY",
+      "observations": [],
+      "note": "確認した部局別予算・補正資料では、当該箇所を含む複数箇所の事業費総額は確認できるが、canonical案件へ直接帰属する金額を分離できないため採用しない。"
+    },
+    {
+      "projectId": "kawanoe-mishima-bypass",
+      "auditStatus": "CONFIRMED_PROJECT_BUDGET",
+      "observations": [
+        {
+          "fiscalYear": 2024,
+          "asOf": "2024-04-01",
+          "amountMillionYen": 438,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r6-important-proposals",
+          "note": "調査設計、用地買収の費用として配分。"
+        },
+        {
+          "fiscalYear": 2025,
+          "asOf": "2025-04-01",
+          "amountMillionYen": 254,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r7-important-proposals",
+          "note": "調査設計、用地買収の費用として配分。"
+        },
+        {
+          "fiscalYear": 2026,
+          "asOf": "2026-04-01",
+          "amountMillionYen": 446,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r8-important-proposals",
+          "note": "調査設計、用地買収の費用として配分。"
+        }
+      ]
+    },
+    {
+      "projectId": "niihama-bypass",
+      "auditStatus": "CONFIRMED_PROJECT_BUDGET",
+      "observations": [
+        {
+          "fiscalYear": 2024,
+          "asOf": "2024-04-01",
+          "amountMillionYen": 945,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r6-important-proposals",
+          "note": "調査設計、用地買収及び改良工事の費用として配分。"
+        },
+        {
+          "fiscalYear": 2025,
+          "asOf": "2025-04-01",
+          "amountMillionYen": 581,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r7-important-proposals",
+          "note": "調査設計、用地買収及び改良工事の費用として配分。"
+        },
+        {
+          "fiscalYear": 2026,
+          "asOf": "2026-04-01",
+          "amountMillionYen": 730,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r8-important-proposals",
+          "note": "調査設計、用地買収及び改良工事の費用として配分。"
+        }
+      ]
+    },
+    {
+      "projectId": "komatsu-bypass",
+      "auditStatus": "CONFIRMED_PROJECT_BUDGET",
+      "observations": [
+        {
+          "fiscalYear": 2024,
+          "asOf": "2024-04-01",
+          "amountMillionYen": 175,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r6-important-proposals",
+          "note": "調査設計、用地買収及び改良工事の費用として配分。"
+        },
+        {
+          "fiscalYear": 2025,
+          "asOf": "2025-04-01",
+          "amountMillionYen": 306,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r7-important-proposals",
+          "note": "調査設計、用地買収及び改良工事の費用として配分。"
+        },
+        {
+          "fiscalYear": 2026,
+          "asOf": "2026-04-01",
+          "amountMillionYen": 400,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r8-important-proposals",
+          "note": "調査設計、用地買収及び改良工事の費用として配分。"
+        }
+      ]
+    },
+    {
+      "projectId": "yawatahama-road",
+      "auditStatus": "SOURCE_NOT_FOUND",
+      "observations": [],
+      "note": "Phase 2.5のR5-R8主要予算・配分資料のbaseline auditでは、canonical案件へ直接帰属する金額を確認できていない。予算ゼロを意味しない。"
+    },
+    {
+      "projectId": "sukumo-uchiumi-misho-uchiumi",
+      "auditStatus": "SCOPE_MISMATCH",
+      "observations": [],
+      "note": "R5-R8の政府予算反映資料では『宿毛内海道路』全体の配分額を確認できるが、canonical recordの御荘～内海等のscopeと同一と確認できないため採用しない。"
+    },
+    {
+      "projectId": "matsuyama-outer-ring-inter-east",
+      "auditStatus": "CONFIRMED_PROJECT_BUDGET",
+      "observations": [
+        {
+          "fiscalYear": 2023,
+          "asOf": "2023-04-01",
+          "amountMillionYen": 525,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r5-important-proposals",
+          "note": "調査設計、用地買収の費用として配分。"
+        },
+        {
+          "fiscalYear": 2024,
+          "asOf": "2024-04-01",
+          "amountMillionYen": 897,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r6-important-proposals",
+          "note": "調査設計、用地買収の費用として配分。"
+        },
+        {
+          "fiscalYear": 2025,
+          "asOf": "2025-04-01",
+          "amountMillionYen": 1269,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r7-important-proposals",
+          "note": "調査設計、用地買収の費用として配分。"
+        },
+        {
+          "fiscalYear": 2026,
+          "asOf": "2026-04-01",
+          "amountMillionYen": 2224,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r8-important-proposals",
+          "note": "調査設計、用地買収の費用として配分。"
+        }
+      ]
+    },
+    {
+      "projectId": "nomura-dam-improvement",
+      "auditStatus": "CONFIRMED_PROJECT_BUDGET",
+      "observations": [
+        {
+          "fiscalYear": 2023,
+          "asOf": "2023-04-01",
+          "amountMillionYen": 2258,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r5-important-proposals",
+          "note": "国の野村ダム改良事業費。"
+        },
+        {
+          "fiscalYear": 2024,
+          "asOf": "2024-04-01",
+          "amountMillionYen": 4482,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r6-important-proposals",
+          "note": "国の野村ダム改良事業費。"
+        },
+        {
+          "fiscalYear": 2025,
+          "asOf": "2025-04-01",
+          "amountMillionYen": 3893,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r7-important-proposals",
+          "note": "放流設備増設工事の推進に必要な野村ダム改良事業費。"
+        },
+        {
+          "fiscalYear": 2026,
+          "asOf": "2026-04-01",
+          "amountMillionYen": 3165,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r8-important-proposals",
+          "note": "放流設備工（減勢工）やゲート設備工事の推進に必要な野村ダム改良事業費。"
         }
       ]
     }
