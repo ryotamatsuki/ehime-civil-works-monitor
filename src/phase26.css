@@ -12,7 +12,28 @@
 .phase26-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; }
 .phase26-metrics span { border-top: 1px solid color-mix(in srgb, currentColor 24%, transparent); padding-top: .7rem; font-size: .72rem; letter-spacing: .06em; }
 .phase26-metrics strong { display: block; font-size: 1.55rem; letter-spacing: 0; margin-bottom: .2rem; }
+.phase26-definition strong { font-weight: 700; }
+
+.phase26-policy {
+  border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  padding-top: 1rem;
+}
+
+.phase26-policy summary {
+  cursor: pointer;
+  font-weight: 700;
+  letter-spacing: .02em;
+  width: fit-content;
+}
+
+.phase26-policy summary:hover { text-decoration: underline; text-underline-offset: .2em; }
+.phase26-policy-body { margin-top: 1rem; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.4rem; }
+.phase26-policy-body section { border-top: 1px solid color-mix(in srgb, currentColor 14%, transparent); padding-top: .85rem; }
+.phase26-policy-body h3 { margin: 0 0 .45rem; font-size: .9rem; }
+.phase26-policy-body p { margin: 0; line-height: 1.7; font-size: .9rem; }
+.phase26-policy-body ol { margin: .15rem 0 .7rem; padding-left: 1.35rem; line-height: 1.65; font-size: .9rem; }
 
 @media (max-width: 720px) {
   .phase26-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .phase26-policy-body { grid-template-columns: 1fr; }
 }
