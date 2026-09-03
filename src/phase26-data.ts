@@ -13,6 +13,26 @@ export interface Phase26Seed {
   evalSource: string;
   roads: RoadSeed[];
   sabo: SaboSeed[];
+  excludedRoadIds?: string[];
+  roadAdditions?: RoadSeed[];
+}
+
+export interface Phase26Reconciliation {
+  excludedExistingRoadIds: Array<{ candidateId: string; existingProjectId: string; reason: string }>;
+  roadAdditions: RoadSeed[];
+}
+
+export function reconcilePhase26Seed(seed: Phase26Seed, reconciliation: Phase26Reconciliation): Phase26Seed {
+  return {
+    ...seed,
+    excludedRoadIds: reconciliation.excludedExistingRoadIds.map((item) => item.candidateId),
+    roadAdditions: reconciliation.roadAdditions,
+  };
+}
+
+export function phase26RoadRows(seed: Phase26Seed): RoadSeed[] {
+  const excluded = new Set(seed.excludedRoadIds ?? []);
+  return [...seed.roads.filter(([id]) => !excluded.has(id)), ...(seed.roadAdditions ?? [])];
 }
 
 const centers: Record<string, [number, number]> = {
@@ -57,7 +77,7 @@ function baseProject(id: string, name: string, municipalities: string[], source:
 }
 
 export function phase26Projects(seed: Phase26Seed): Project[] {
-  const roads = seed.roads.map(([id, name, operator, municipalities, start, completion, scale]) => {
+  const roads = phase26RoadRows(seed).map(([id, name, operator, municipalities, start, completion, scale]) => {
     const source = roadSource(seed);
     const provenance: Record<string, string> = { startFiscalYear: source.id, summary: source.id, geometryRef: source.id };
     if (completion !== null) provenance.plannedCompletionFiscalYear = source.id;
