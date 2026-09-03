@@ -1,6 +1,6 @@
 # Ehime Civil Works Monitor
 
-愛媛県内の主要公共土木事業を、地図・一次情報源・現在値・履歴・変更・年度予算から確認するための非公式Web GISです。
+愛媛県内の公共土木事業を、地図・一次情報源・現在値・履歴・変更・年度予算から確認するための非公式Web GISです。
 
 公開サイト: https://ryotamatsuki.github.io/ehime-civil-works-monitor/
 
@@ -16,16 +16,85 @@
 
 未確認値は推測せず `null` または空配列とします。
 
+## Phase 2.7A-2 — Reconciled Canonical Expansion
+
+Phase 2.7A / 2.7A-2では、Phase 2.6の109件を正しい全母集団とは仮定せず、農業農村整備、林業・治山・林道、漁港、河川、港湾・海岸およびH29～R8公共事業評価を重点的に再調査しました。
+
+Round 1 / Round 2候補について、既存canonicalとの一致、Work Package、Program、Asset、completed historical、市町単独、identity/scope conflictを除去し、公式一次資料から独立Projectとして確認できたA/B候補だけをcanonicalへ追加しています。
+
+- Phase 2.6 runtime canonical: **109 projects**
+- Phase 2.7 new reconciled projects: **60 projects**
+- runtime canonical inventory: **169 projects**
+
+Phase 2.7追加60件の内訳:
+
+| Category | New |
+| --- | ---: |
+| agriculture | 7 |
+| forestry | 20 |
+| fishing-port | 3 |
+| river | 24 |
+| sabo | 5 |
+| road | 1 |
+| **Total** | **60** |
+
+Round 1の「広域河川改修事業（二級河川 渦井川・室川・界谷川・金剛院谷川）」は、既存canonicalの「二級河川 界谷川 広域河川改修事業」と親子・複合scopeの関係が未解決であるため、重複リスクを避けてHoldとしています。
+
+詳細: [`docs/phase27a2-canonical-expansion.md`](docs/phase27a2-canonical-expansion.md)
+
+### Current category coverage
+
+| Category | Projects |
+| --- | ---: |
+| road | 67 |
+| sabo | 27 |
+| river | 32 |
+| port | 4 |
+| urban | 4 |
+| agriculture | 9 |
+| coast | 2 |
+| dam | 1 |
+| forestry | 20 |
+| fishing-port | 3 |
+| **Total** | **169** |
+
+### Data Depth projection
+
+Phase 2.7追加60件は、identity/operator/municipality/current primary sourceを確認したInventoryとして追加し、未確認の総事業費、完成年度、進捗率、年度予算等を推測していません。
+
+| Data Depth | Projects |
+| --- | ---: |
+| Inventory | 64 |
+| Snapshot | 77 |
+| History | 0 |
+| Enriched | 28 |
+| **Total** | **169** |
+
+`History+`は28、Monitoredは105です。Inventory追加により掲載母集団は広がりましたが、数値監視が済んでいない案件をSnapshotへ水増ししていません。
+
+### Phase 2.7 overlay
+
+既存109件のJSON/history/年度予算観測を回帰させないため、Phase 2.7追加母集団は `public/data/phase27-inventory.json` に分離しています。
+
+runtimeでは `src/phase26-bootstrap.ts` がPhase 2.6とPhase 2.7のoverlayを順次mergeし、
+
+- projects
+- GeoJSON
+- enrichment
+- annual-budget audit
+
+を169件のcanonical unionとして読み込みます。静的detail route生成、validator、inventory reportも同じ169件を検証します。
+
+Phase 2.7追加60件のgeometryはすべて `locationAccuracy: approximate` の検索・俯瞰用representative Pointです。公式の施工区域、河川改修区間、林道線形、治山施設位置、漁港施設位置等を意味しません。
+
 ## Phase 2.6 — Comprehensive Project Inventory Expansion
 
-従来の50件は「愛媛県の主要50事業」という公式母集団ではなく、公共事業評価・「えひめの土木2026」等から段階的に同定できた案件群でした。
-
-Phase 2.6では母集団を再定義し、公式資料横断で独立Projectをreconcileしました。
+Phase 2.6では、従来50件を「愛媛県の主要50事業」という公式母集団とは扱わず、公式資料横断で独立Projectをreconcileしました。
 
 - baseline: 50 projects
 - new road projects: 50
 - new sabo projects: 9
-- runtime canonical inventory: **109 projects**
+- Phase 2.6 runtime canonical: **109 projects**
 
 主なstructured source:
 
@@ -37,47 +106,6 @@ Phase 2.6では母集団を再定義し、公式資料横断で独立Projectをr
 工事契約1件、設計・測量業務、施設名、broader route/river labelは、それだけではcanonical Projectにしません。
 
 詳細: [`docs/comprehensive-project-inventory-audit.md`](docs/comprehensive-project-inventory-audit.md)
-
-### Current category coverage
-
-| Category | Projects |
-| --- | ---: |
-| road | 66 |
-| sabo | 22 |
-| river | 8 |
-| port | 4 |
-| urban | 4 |
-| agriculture | 2 |
-| coast | 2 |
-| dam | 1 |
-| **Total** | **109** |
-
-### Data Depth projection
-
-| Data Depth | Projects |
-| --- | ---: |
-| Inventory | 4 |
-| Snapshot | 77 |
-| History | 0 |
-| Enriched | 28 |
-| **Total** | **109** |
-
-`History+`は28、Monitoredは105です。Enriched案件にもCost / Schedule / Progress historyが含まれるため、exclusive `History` が0でも履歴がないという意味ではありません。
-
-### Phase 2.6 overlay
-
-既存50件のJSON/history/Phase 2.5 budget observationsを回帰させないため、Phase 2.6追加母集団は `public/data/phase26-inventory.json` に分離しています。
-
-`src/phase26-bootstrap.ts` が既存UIロード前に、
-
-- projects
-- GeoJSON
-- enrichment
-- annual-budget audit
-
-へ59件をcanonical unionとしてmergeします。静的detail route生成とvalidator/reportも同じunionを検証します。
-
-追加59件のgeometryはすべて `locationAccuracy: approximate` のrepresentative Pointです。公式道路線形・施工区域・砂防施設座標ではありません。
 
 ## Phase 2.5 — Project-Level Annual Budget Reconstruction
 
@@ -117,7 +145,8 @@ R5～R8の公式予算・配分資料を案件scopeへ照合し、project-specif
 10. 増額・延期理由は一次資料に明記された場合だけ記録する。
 11. approximate geometryをofficial geometryのように表示しない。
 12. 類似名称・broader/narrower scopeを自動mergeしない。
-13. Phase 2.6の追加案件で年度予算未監査なら `SOURCE_NOT_FOUND`。0円を意味しない。
+13. Phase 2.6 / 2.7追加案件で年度予算未監査なら `SOURCE_NOT_FOUND`。0円を意味しない。
+14. 掲載件数は、公式資料から確認済みのProject件数であり、愛媛県内公共事業の全件数ではない。
 
 ## Schema / files
 
@@ -126,9 +155,11 @@ R5～R8の公式予算・配分資料を案件scopeへ照合し、project-specif
 - Enrichment: `public/data/enrichment.json` / schema `2.1.0`
 - R5–R8 annual budget audit: `public/data/annual-budget-r5-r8.json` / schema `2.5.0`
 - Phase 2.6 inventory overlay: `public/data/phase26-inventory.json` / version `2.6.0`
+- Phase 2.7 inventory overlay: `public/data/phase27-inventory.json` / version `2.7.0`
 
 Relevant documentation:
 
+- [`docs/phase27a2-canonical-expansion.md`](docs/phase27a2-canonical-expansion.md)
 - [`docs/comprehensive-project-inventory-audit.md`](docs/comprehensive-project-inventory-audit.md)
 - [`docs/inventory-coverage.md`](docs/inventory-coverage.md)
 - [`docs/adding-projects.md`](docs/adding-projects.md)
