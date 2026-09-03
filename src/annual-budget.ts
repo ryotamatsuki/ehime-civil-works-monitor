@@ -14,6 +14,14 @@ export interface AnnualBudgetStats {
   comparable4: number;
 }
 
+export interface ComparableBudgetSeries {
+  key: string;
+  basis: AnnualBudgetObservation['basis'];
+  budgetStage: AnnualBudgetObservation['budgetStage'];
+  scope: AnnualBudgetObservation['scope'];
+  observations: AnnualBudgetObservation[];
+}
+
 export function getAnnualBudgetRecord(
   collection: AnnualBudgetCollection,
   projectId: string,
@@ -50,6 +58,32 @@ export function getAnnualBudgetObservations(
     .sort((a, b) => a.fiscalYear - b.fiscalYear || a.asOf.localeCompare(b.asOf));
 }
 
+export function getComparableBudgetSeries(
+  observations: AnnualBudgetObservation[],
+): ComparableBudgetSeries[] {
+  const groups = new Map<string, AnnualBudgetObservation[]>();
+  for (const entry of observations) {
+    const key = `${entry.basis}|${entry.budgetStage}|${entry.scope}`;
+    const values = groups.get(key) ?? [];
+    values.push(entry);
+    groups.set(key, values);
+  }
+  return [...groups.entries()].map(([key, values]) => ({
+    key,
+    basis: values[0].basis,
+    budgetStage: values[0].budgetStage,
+    scope: values[0].scope,
+    observations: [...values].sort((a, b) => a.fiscalYear - b.fiscalYear || a.asOf.localeCompare(b.asOf)),
+  }));
+}
+
+function longestComparableYearCount(record: AnnualBudgetAuditRecord): number {
+  return getComparableBudgetSeries(record.observations).reduce((max, series) => {
+    const years = new Set(series.observations.map((entry) => entry.fiscalYear));
+    return Math.max(max, years.size);
+  }, 0);
+}
+
 export function aggregateAnnualBudget(collection: AnnualBudgetCollection): AnnualBudgetStats {
   const byFiscalYear: Record<number, number> = Object.fromEntries(
     collection.targetFiscalYears.map((fiscalYear) => [fiscalYear, 0]),
@@ -60,14 +94,15 @@ export function aggregateAnnualBudget(collection: AnnualBudgetCollection): Annua
   let confirmedProjectCount = 0;
 
   for (const record of collection.records) {
-    const years = new Set(record.observations.map((entry) => entry.fiscalYear));
-    if (record.auditStatus === 'CONFIRMED_PROJECT_BUDGET' && years.size > 0) confirmedProjectCount += 1;
+    const allYears = new Set(record.observations.map((entry) => entry.fiscalYear));
+    if (record.auditStatus === 'CONFIRMED_PROJECT_BUDGET' && allYears.size > 0) confirmedProjectCount += 1;
     for (const fiscalYear of collection.targetFiscalYears) {
-      if (years.has(fiscalYear)) byFiscalYear[fiscalYear] = (byFiscalYear[fiscalYear] ?? 0) + 1;
+      if (allYears.has(fiscalYear)) byFiscalYear[fiscalYear] = (byFiscalYear[fiscalYear] ?? 0) + 1;
     }
-    if (years.size >= 2) comparable2Plus += 1;
-    if (years.size >= 3) comparable3Plus += 1;
-    if (collection.targetFiscalYears.every((fiscalYear) => years.has(fiscalYear))) comparable4 += 1;
+    const comparableYears = longestComparableYearCount(record);
+    if (comparableYears >= 2) comparable2Plus += 1;
+    if (comparableYears >= 3) comparable3Plus += 1;
+    if (comparableYears >= collection.targetFiscalYears.length) comparable4 += 1;
   }
 
   return { confirmedProjectCount, byFiscalYear, comparable2Plus, comparable3Plus, comparable4 };
