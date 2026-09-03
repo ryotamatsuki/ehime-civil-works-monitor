@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "2.7.0",
+  "auditedAt": "2026-09-03",
+  "additions": [
+    {"id":"dozen-kamanokuchi-kami-irrigation","name":"水利施設等保全高度化事業（水利施設整備事業）（道前釜之口上地区）","category":"agriculture","categoryLabel":"農業土木","operator":"愛媛県","department":"農地整備課","municipalities":["西条市"],"status":"under_construction","statusLabel":"事業中","summary":"西条市丹原町で老朽化した農業用用排水施設を更新し、農業用水の安定供給と維持管理負担軽減を図る事業。","scope":"令和7年度公共事業評価で継続決定。農業用用排水施設2,470m、管理用道路1,630m、取水ゲート10箇所等。","source":{"id":"p27-r7-eval-dozen","title":"令和7年度愛媛県公共事業評価委員会 審議対象事業一覧表","publisher":"愛媛県","url":"https://www.pref.ehime.jp/uploaded/attachment/162763.pdf"}},
+    {"id":"inuzuka-reservoir-disaster-prevention","name":"農村地域防災減災事業（防災重点農業用ため池緊急整備事業）（犬塚地区）","category":"agriculture","categoryLabel":"農業土木","operator":"愛媛県","department":"農地整備課","municipalities":["今治市"],"status":"under_construction","statusLabel":"事業中","summary":"今治市の防災重点農業用ため池2箇所を改修する県営防災減災事業。","scope":"令和7年度公共事業評価で事業継続が妥当と判断。完了目標令和9年度。","source":{"id":"p27-r7-eval-inuzuka","title":"令和7年度愛媛県公共事業評価委員会 審議対象事業一覧表","publisher":"愛媛県","url":"https://www.pref.ehime.jp/uploaded/attachment/162763.pdf"}},
+    {"id":"gotenuchi-slope","name":"まちづくり連携砂防等事業（急）御殿内地区","category":"sabo","categoryLabel":"急傾斜","operator":"愛媛県","department":"砂防課","municipalities":["宇和島市"],"status":"under_construction","statusLabel":"事業中","summary":"宇和島市吉田町沖村で人家・国道・市道を保全する急傾斜地崩壊対策事業。","scope":"令和7年度公共事業評価で継続決定。令和8年2月発注見通しでも擁壁工を確認。","source":{"id":"p27-r8-gotenuchi-procurement","title":"工事の発注の見通し（令和8年2月1日現在）","publisher":"愛媛県 南予地方局","url":"https://www.pref.ehime.jp/uploaded/attachment/168745.pdf"}},
+    {"id":"yomurai-slope","name":"まちづくり連携砂防等事業（急）与村井地区","category":"sabo","categoryLabel":"急傾斜","operator":"愛媛県","department":"砂防課","municipalities":["宇和島市"],"status":"under_construction","statusLabel":"事業中","summary":"宇和島市吉田町法花津で人家・国道・市道を保全する急傾斜地崩壊対策事業。","scope":"令和7年度公共事業評価で継続決定。令和8年3月発注見通しでも擁壁工を確認。","source":{"id":"p27-r8-yomurai-procurement","title":"工事の発注の見通し（令和8年3月1日現在）","publisher":"愛媛県 南予地方局","url":"https://www.pref.ehime.jp/uploaded/attachment/172737.pdf"}}
+  ]
+}
