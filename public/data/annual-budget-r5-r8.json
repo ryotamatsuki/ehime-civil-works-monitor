@@ -1,0 +1,144 @@
+{
+  "schemaVersion": "2.4.0",
+  "generatedAt": "2026-09-03",
+  "targetFiscalYears": [2023, 2024, 2025, 2026],
+  "dataPolicy": "R5-R8の年度予算・配分は、案件名と金額が一次資料で直接対応し、canonical projectとscopeが一致する場合のみ収録する。予算事業全体額、契約額、総事業費、累計投資額を案件年度予算へ読み替えない。確認できない年度は0ではなく未確認とする。",
+  "defaultUnresolvedStatus": "SOURCE_NOT_FOUND",
+  "defaultUnresolvedNote": "Phase 2.4で確認したR5-R8主要予算・配分資料からcanonical案件へ直接帰属できる金額を確認できていない。予算ゼロを意味せず、より詳細な箇所表・配分資料で確認できる可能性がある。",
+  "sources": [
+    {
+      "id": "r5-important-proposals",
+      "title": "令和5年度重要施策提案・要望 政府予算案反映状況調書",
+      "publisher": "愛媛県",
+      "url": "https://www.pref.ehime.jp/uploaded/attachment/18086.pdf",
+      "accessed": "2026-09-03",
+      "fiscalYear": 2023,
+      "budgetStage": "allocation",
+      "locator": "p.19 大洲・八幡浜自動車道『夜昼道路』『大洲西道路』の整備促進"
+    },
+    {
+      "id": "r6-important-proposals",
+      "title": "令和6年度重要施策提案・要望 政府予算案反映状況調書",
+      "publisher": "愛媛県",
+      "url": "https://www.pref.ehime.jp/uploaded/attachment/118582.pdf",
+      "accessed": "2026-09-03",
+      "fiscalYear": 2024,
+      "budgetStage": "allocation",
+      "locator": "p.14 大洲・八幡浜自動車道『夜昼道路』『大洲西道路』"
+    },
+    {
+      "id": "r7-important-proposals",
+      "title": "令和7年度重要施策提案・要望 政府予算案反映状況調書",
+      "publisher": "愛媛県",
+      "url": "https://www.pref.ehime.jp/uploaded/attachment/148176.pdf",
+      "accessed": "2026-09-03",
+      "fiscalYear": 2025,
+      "budgetStage": "allocation",
+      "locator": "p.20 高規格道路の整備推進について"
+    },
+    {
+      "id": "r8-initial-civil-works-pr",
+      "title": "令和8年度当初予算（案）個別事業説明書 PR版 土木部",
+      "publisher": "愛媛県",
+      "url": "https://www.pref.ehime.jp/uploaded/attachment/169537.pdf",
+      "accessed": "2026-09-03",
+      "fiscalYear": 2026,
+      "budgetStage": "initial",
+      "locator": "p.2 地域高規格道路大洲・八幡浜自動車道整備事業費"
+    }
+  ],
+  "records": [
+    {
+      "projectId": "yohiru-road",
+      "auditStatus": "CONFIRMED_PROJECT_BUDGET",
+      "observations": [
+        {
+          "fiscalYear": 2023,
+          "asOf": "2023-04-01",
+          "amountMillionYen": 661,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r5-important-proposals",
+          "note": "用地買収、道路改良工事等の費用として配分された事業費。"
+        },
+        {
+          "fiscalYear": 2024,
+          "asOf": "2024-04-01",
+          "amountMillionYen": 793,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r6-important-proposals",
+          "note": "用地買収、道路改良工事等の費用として配分された事業費。"
+        },
+        {
+          "fiscalYear": 2025,
+          "asOf": "2025-04-01",
+          "amountMillionYen": 814,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r7-important-proposals",
+          "note": "橋梁工事、改良工事の費用として配分された事業費。"
+        },
+        {
+          "fiscalYear": 2026,
+          "asOf": "2026-02-10",
+          "amountMillionYen": 1156.842,
+          "basis": "project_allocation",
+          "budgetStage": "initial",
+          "scope": "project",
+          "sourceId": "r8-initial-civil-works-pr",
+          "note": "令和8年度当初予算案の工区別事業計画に明記された夜昼道路の事業費。トンネル工、橋梁上部工・下部工、用地補償。"
+        }
+      ]
+    },
+    {
+      "projectId": "ozu-west-road",
+      "auditStatus": "CONFIRMED_PROJECT_BUDGET",
+      "observations": [
+        {
+          "fiscalYear": 2023,
+          "asOf": "2023-04-01",
+          "amountMillionYen": 318,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r5-important-proposals",
+          "note": "測量、調査、設計等の費用として配分された事業費。"
+        },
+        {
+          "fiscalYear": 2024,
+          "asOf": "2024-04-01",
+          "amountMillionYen": 330,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r6-important-proposals",
+          "note": "用地買収、道路改良工事等の費用として配分された事業費。"
+        },
+        {
+          "fiscalYear": 2025,
+          "asOf": "2025-04-01",
+          "amountMillionYen": 340,
+          "basis": "project_allocation",
+          "budgetStage": "allocation",
+          "scope": "project",
+          "sourceId": "r7-important-proposals",
+          "note": "用地買収、改良工事の費用として配分された事業費。"
+        },
+        {
+          "fiscalYear": 2026,
+          "asOf": "2026-02-10",
+          "amountMillionYen": 57.894,
+          "basis": "project_allocation",
+          "budgetStage": "initial",
+          "scope": "project",
+          "sourceId": "r8-initial-civil-works-pr",
+          "note": "令和8年度当初予算案の工区別事業計画に明記された大洲西道路の事業費。橋梁下部工、用地調査。"
+        }
+      ]
+    }
+  ]
+}
