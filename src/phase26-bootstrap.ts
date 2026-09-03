@@ -13,6 +13,7 @@ import {
   mergePhase27Enrichment,
   mergePhase27GeoJson,
   mergePhase27Projects,
+  type Phase27AdditionSeed,
   type Phase27Seed,
 } from './phase27-data';
 import type { ProjectCollection } from './types';
@@ -28,14 +29,20 @@ function loadSeed() {
     nativeFetch(`${base}data/phase26-inventory.json`),
     nativeFetch(`${base}data/phase26-reconciliation.json`),
     nativeFetch(`${base}data/phase27-inventory.json`),
-  ]).then(async ([seedResponse, reconciliationResponse, phase27Response]) => {
+    nativeFetch(`${base}data/phase27-evaluation-additions.json`),
+  ]).then(async ([seedResponse, reconciliationResponse, phase27Response, evaluationResponse]) => {
     if (!seedResponse.ok) throw new Error(`Phase 2.6 seed HTTP ${seedResponse.status}`);
     if (!reconciliationResponse.ok) throw new Error(`Phase 2.6 reconciliation HTTP ${reconciliationResponse.status}`);
     if (!phase27Response.ok) throw new Error(`Phase 2.7 seed HTTP ${phase27Response.status}`);
+    if (!evaluationResponse.ok) throw new Error(`Phase 2.7 evaluation seed HTTP ${evaluationResponse.status}`);
     const seed = await seedResponse.json() as Phase26Seed;
     const reconciliation = await reconciliationResponse.json() as Phase26Reconciliation;
     const phase27 = await phase27Response.json() as Phase27Seed;
-    return { phase26: reconcilePhase26Seed(seed, reconciliation), phase27 };
+    const evaluation = await evaluationResponse.json() as { additions: Phase27AdditionSeed[] };
+    return {
+      phase26: reconcilePhase26Seed(seed, reconciliation),
+      phase27: { ...phase27, additions: [...phase27.additions, ...evaluation.additions] },
+    };
   });
   return seedPromise;
 }
@@ -50,6 +57,7 @@ window.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Res
   const seedTarget = pathname.endsWith('/data/phase26-inventory.json')
     || pathname.endsWith('/data/phase26-reconciliation.json')
     || pathname.endsWith('/data/phase27-inventory.json')
+    || pathname.endsWith('/data/phase27-evaluation-additions.json')
     || pathname.endsWith('/data/project-universe-audit.json')
     || pathname.endsWith('/data/source-audit-ledger.json');
   if (seedTarget) return nativeFetch(input, init);
