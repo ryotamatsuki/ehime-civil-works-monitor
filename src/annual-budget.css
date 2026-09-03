@@ -1,0 +1,151 @@
+.annual-budget-summary,
+.annual-budget-detail {
+  margin-top: 1.25rem;
+  padding: 1.2rem;
+  border: 1px solid #d9e2e6;
+  border-radius: 16px;
+  background: #fbfcfc;
+}
+
+.annual-budget-summary-head,
+.annual-budget-detail-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.annual-budget-summary h2,
+.annual-budget-detail h2 {
+  margin: 0;
+}
+
+.annual-budget-summary-head > p,
+.budget-intro {
+  max-width: 68ch;
+  color: #56666e;
+  line-height: 1.6;
+}
+
+.annual-budget-metrics {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  margin-top: 1rem;
+  border: 1px solid #dfe6e9;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.annual-budget-metrics > div {
+  padding: .8rem;
+  border-right: 1px solid #e5eaec;
+}
+
+.annual-budget-metrics > div:last-child { border-right: 0; }
+.annual-budget-metrics strong { display: block; font-size: 1.35rem; }
+.annual-budget-metrics span { display: block; margin-top: .25rem; color: #65747c; font-size: .72rem; line-height: 1.35; }
+
+.annual-budget-policy,
+.budget-rule,
+.budget-audit-note {
+  margin: .9rem 0 0;
+  padding: .7rem .85rem;
+  border-radius: 9px;
+  background: #f3f6f7;
+  color: #58676f;
+  font-size: .8rem;
+  line-height: 1.6;
+}
+
+.budget-year-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .75rem;
+  margin-top: 1rem;
+}
+
+.budget-year-card {
+  min-width: 0;
+  border: 1px solid #dde5e8;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.budget-year-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: .5rem;
+  padding: .65rem .75rem;
+  border-bottom: 1px solid #e8edef;
+  background: #f7f9fa;
+}
+
+.budget-year-head span { color: #697981; font-size: .7rem; font-weight: 700; letter-spacing: .06em; }
+.budget-year-head strong { font-size: .86rem; }
+
+.budget-observation { padding: .8rem .75rem; border-top: 1px dashed #e1e7e9; }
+.budget-observation:first-of-type { border-top: 0; }
+.budget-observation > strong { display: block; font-size: 1.05rem; }
+.budget-observation p { margin: .45rem 0 0; color: #5c6a71; font-size: .76rem; line-height: 1.55; }
+
+.budget-tags { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .4rem; }
+.budget-tags span,
+.budget-audit-status,
+.budget-series-list span {
+  display: inline-flex;
+  align-items: center;
+  padding: .15rem .4rem;
+  border: 1px solid #d5dfe3;
+  border-radius: 999px;
+  background: #f7f9fa;
+  color: #5d6c74;
+  font-size: .68rem;
+}
+
+.budget-audit-status { font-weight: 700; }
+.status-confirmed_project_budget { border-color: #9fb9ae; background: #f2f8f5; color: #3d6152; }
+.status-scope_mismatch,
+.status-broader_program_only { border-style: dashed; }
+
+.budget-source { display: inline-block; margin-top: .45rem; font-size: .74rem; }
+
+.budget-missing {
+  display: grid;
+  min-height: 92px;
+  place-content: center;
+  text-align: center;
+  color: #8a969c;
+  font-size: 1.25rem;
+}
+
+.budget-missing span { display: block; margin-top: .2rem; font-size: .68rem; }
+
+.budget-series-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-top: .8rem;
+}
+
+.budget-series-list span { border-color: #aebfc5; background: #f5f8f9; }
+.budget-series-list strong { margin-right: .25rem; }
+.budget-comparable-note { color: #68767d; font-size: .8rem; }
+
+@media (max-width: 1000px) {
+  .annual-budget-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .annual-budget-metrics > div:nth-child(3n) { border-right: 0; }
+  .budget-year-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 680px) {
+  .annual-budget-summary-head,
+  .annual-budget-detail-head { display: block; }
+  .budget-audit-status { margin-top: .6rem; }
+  .annual-budget-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .annual-budget-metrics > div:nth-child(3n) { border-right: 1px solid #e5eaec; }
+  .annual-budget-metrics > div:nth-child(2n) { border-right: 0; }
+  .budget-year-grid { grid-template-columns: 1fr; }
+}
