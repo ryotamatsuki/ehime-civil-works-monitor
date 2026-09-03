@@ -3,6 +3,7 @@ import baseProjects from '../public/data/projects.json';
 import baseEnrichment from '../public/data/enrichment.json';
 import baseBudget from '../public/data/annual-budget-r5-r8.json';
 import rawSeed from '../public/data/phase26-inventory.json';
+import rawReconciliation from '../public/data/phase26-reconciliation.json';
 import { filterProjects } from '../src/domain';
 import {
   mergeAnnualBudget,
@@ -10,21 +11,34 @@ import {
   mergeProjects,
   phase26Features,
   phase26Projects,
+  reconcilePhase26Seed,
+  type Phase26Reconciliation,
   type Phase26Seed,
 } from '../src/phase26-data';
 import type { ProjectCollection } from '../src/types';
 import type { EnrichmentCollection } from '../src/enrichment-types';
 import type { AnnualBudgetCollection } from '../src/annual-budget-types';
 
-const seed = rawSeed as unknown as Phase26Seed;
+const seed = reconcilePhase26Seed(
+  rawSeed as unknown as Phase26Seed,
+  rawReconciliation as unknown as Phase26Reconciliation,
+);
 const projects = mergeProjects(baseProjects as unknown as ProjectCollection, seed);
 
 describe('Phase 2.6 comprehensive inventory', () => {
-  it('expands the 50-project baseline past the 100-project benchmark without duplicate ids', () => {
+  it('expands the 50-project baseline past the 100-project benchmark without duplicate ids or names', () => {
     expect(baseProjects.projects).toHaveLength(50);
     expect(phase26Projects(seed)).toHaveLength(59);
     expect(projects.projects).toHaveLength(109);
     expect(new Set(projects.projects.map((project) => project.id)).size).toBe(109);
+    expect(new Set(projects.projects.map((project) => project.name.replace(/[\s　（）()・･\-‐―ー]/g, '').toLowerCase())).size).toBe(109);
+  });
+
+  it('reconciles the duplicate Matsuyama outer-airport candidate instead of creating a second canonical project', () => {
+    const additions = phase26Projects(seed);
+    expect(additions.some((project) => project.id === 'matsuyama-outer-airport-line')).toBe(false);
+    expect(additions.some((project) => project.id === 'kamibun-mishima-mishima-chuo')).toBe(true);
+    expect(projects.projects.filter((project) => project.name.includes('一般国道56号 松山外環状道路空港線'))).toHaveLength(1);
   });
 
   it('keeps the existing filter system usable at the expanded scale', () => {
@@ -34,7 +48,7 @@ describe('Phase 2.6 comprehensive inventory', () => {
     const imabari = filterProjects(projects.projects, {
       query: '今治', category: '', operator: '', municipality: '今治市', status: '', depth: '', alert: '',
     }, new Set());
-    expect(roads.length).toBeGreaterThanOrEqual(60);
+    expect(roads).toHaveLength(66);
     expect(imabari.length).toBeGreaterThan(0);
   });
 
