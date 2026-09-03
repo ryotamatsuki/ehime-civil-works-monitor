@@ -31,7 +31,7 @@ describe('Phase 2.6 comprehensive inventory', () => {
     expect(phase26Projects(seed)).toHaveLength(59);
     expect(projects.projects).toHaveLength(109);
     expect(new Set(projects.projects.map((project) => project.id)).size).toBe(109);
-    expect(new Set(projects.projects.map((project) => project.name.replace(/[\s　（）()・･\-‐―ー]/g, '').toLowerCase())).size).toBe(109);
+    expect(new Set(projects.projects.map((project) => project.name.replace(/[\s\u3000（）()・･\-‐―ー]/g, '').toLowerCase())).size).toBe(109);
   });
 
   it('reconciles the duplicate Matsuyama outer-airport candidate instead of creating a second canonical project', () => {
