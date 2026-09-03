@@ -1,4 +1,5 @@
-import type { Project, ProjectDataset, ProjectSource } from './types';
+import type { Feature, FeatureCollection } from 'geojson';
+import type { Project, ProjectCollection, ProjectSource } from './types';
 import type { EnrichmentCollection, ProjectEnrichmentRecord } from './enrichment-types';
 import type { AnnualBudgetCollection, AnnualBudgetAuditRecord } from './annual-budget-types';
 
@@ -19,6 +20,7 @@ const centers: Record<string, [number, number]> = {
   愛南町: [132.584, 32.963], 宇和島市: [132.560, 33.223], 今治市: [132.997, 34.066], 四国中央市: [133.549, 33.981],
   西予市: [132.511, 33.363], 八幡浜市: [132.423, 33.463], 久万高原町: [132.901, 33.655], 松野町: [132.711, 33.227],
   鬼北町: [132.684, 33.255], 伊方町: [132.354, 33.488], 西条市: [133.181, 33.919], 新居浜市: [133.283, 33.960],
+  宿毛市: [132.727, 32.939],
 };
 
 function hashOffset(id: string) {
@@ -28,7 +30,7 @@ function hashOffset(id: string) {
 }
 
 export function representativePoint(municipalities: string[], id: string): [number, number] {
-  const points = municipalities.map((name) => centers[name]).filter(Boolean);
+  const points = municipalities.map((name) => centers[name]).filter((point): point is [number, number] => Boolean(point));
   if (!points.length) return [132.765, 33.839];
   const lon = points.reduce((sum, point) => sum + point[0], 0) / points.length;
   const lat = points.reduce((sum, point) => sum + point[1], 0) / points.length;
@@ -57,13 +59,14 @@ function baseProject(id: string, name: string, municipalities: string[], source:
 export function phase26Projects(seed: Phase26Seed): Project[] {
   const roads = seed.roads.map(([id, name, operator, municipalities, start, completion, scale]) => {
     const source = roadSource(seed);
+    const provenance: Record<string, string> = { startFiscalYear: source.id, summary: source.id, geometryRef: source.id };
+    if (completion !== null) provenance.plannedCompletionFiscalYear = source.id;
     return {
       ...baseProject(id, name, municipalities, source, seed), category: 'road' as const, categoryLabel: '道路', operator,
       department: operator === '愛媛県' ? '道路建設課' : operator.includes('国土交通省') ? '四国地方整備局' : '高速道路事業',
       startFiscalYear: start, plannedCompletionFiscalYear: completion,
-      summary: `道路整備プログラムVol.8の対象路線一覧表に独立した事業箇所として掲載されている道路整備事業。`,
-      scope: `公表事業規模${scale}。事業期間は一覧表の記載を使用し、完成年度が※の箇所はnullとして推測しない。`,
-      provenance: { startFiscalYear: source.id, plannedCompletionFiscalYear: source.id, summary: source.id, geometryRef: source.id },
+      summary: '道路整備プログラムVol.8の対象路線一覧表に独立した事業箇所として掲載されている道路整備事業。',
+      scope: `公表事業規模${scale}。事業期間は一覧表の記載を使用し、完成年度が※の箇所はnullとして推測しない。`, provenance,
     } satisfies Project;
   });
   const sabo = seed.sabo.map(([id, name, municipality, start, completion, cost, progress, bc, scale]) => {
@@ -80,16 +83,16 @@ export function phase26Projects(seed: Phase26Seed): Project[] {
   return [...roads, ...sabo];
 }
 
-export function mergeProjects(base: ProjectDataset, seed: Phase26Seed): ProjectDataset {
+export function mergeProjects(base: ProjectCollection, seed: Phase26Seed): ProjectCollection {
   return { ...base, datasetTitle: 'Ehime Civil Works Monitor Phase 2.6 — Comprehensive Inventory', generatedAt: seed.d, projects: [...base.projects, ...phase26Projects(seed)] };
 }
 
-export function phase26Features(seed: Phase26Seed) {
+export function phase26Features(seed: Phase26Seed): Feature[] {
   return phase26Projects(seed).map((project) => ({ type: 'Feature' as const, properties: { projectId: project.id, locationAccuracy: 'approximate', phase: '2.6' }, geometry: { type: 'Point' as const, coordinates: representativePoint(project.municipalities, project.id) } }));
 }
 
-export function mergeGeoJson(base: GeoJSON.FeatureCollection, seed: Phase26Seed): GeoJSON.FeatureCollection {
-  return { ...base, features: [...base.features, ...phase26Features(seed)] as GeoJSON.Feature[] };
+export function mergeGeoJson(base: FeatureCollection, seed: Phase26Seed): FeatureCollection {
+  return { ...base, features: [...base.features, ...phase26Features(seed)] };
 }
 
 export function mergeEnrichment(base: EnrichmentCollection, seed: Phase26Seed): EnrichmentCollection {
