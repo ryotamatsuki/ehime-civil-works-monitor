@@ -52,8 +52,8 @@ def main():
         print(f"ERROR: cannot parse annual budget data: {exc}", file=sys.stderr)
         return 1
 
-    if budgets.get("schemaVersion") != "2.4.0":
-        errors.append("schemaVersion must be 2.4.0")
+    if budgets.get("schemaVersion") != "2.5.0":
+        errors.append("schemaVersion must be 2.5.0")
     if not valid_date(budgets.get("generatedAt")):
         errors.append("generatedAt must be ISO date")
     if budgets.get("targetFiscalYears") != TARGET_YEARS:
@@ -126,11 +126,12 @@ def main():
             errors.append(f"{ctx}: confirmed project requires observations")
         if status != "CONFIRMED_PROJECT_BUDGET" and observations:
             errors.append(f"{ctx}: unresolved status must not contain observations")
+        if status != "CONFIRMED_PROJECT_BUDGET" and not isinstance(record.get("note"), str):
+            errors.append(f"{ctx}: unresolved audit record requires note")
         if record.get("note") is not None and not isinstance(record.get("note"), str):
             errors.append(f"{ctx}: note must be string")
 
         identities = set()
-        last_key = None
         for j, entry in enumerate(observations):
             ectx = f"{ctx}.observations[{j}]"
             if not isinstance(entry, dict):
@@ -153,14 +154,23 @@ def main():
                 errors.append(f"{ectx}: sourceId does not resolve")
             if entry.get("note") is not None and not isinstance(entry.get("note"), str):
                 errors.append(f"{ectx}: note must be string")
-            identity = (fiscal_year, entry.get("budgetStage"), entry.get("basis"), entry.get("sourceId"))
+            identity = (
+                fiscal_year,
+                entry.get("budgetStage"),
+                entry.get("basis"),
+                entry.get("scope"),
+                entry.get("sourceId"),
+            )
             if identity in identities:
                 errors.append(f"{ectx}: duplicate observation identity")
             identities.add(identity)
-            order_key = (fiscal_year, entry.get("asOf"))
-            if last_key is not None and order_key < last_key:
-                errors.append(f"{ctx}.observations: must be ordered by fiscalYear/asOf")
-            last_key = order_key
+
+    missing = project_ids - seen_projects
+    extra = seen_projects - project_ids
+    if missing:
+        errors.append("missing audit records: " + ", ".join(sorted(missing)))
+    if extra:
+        errors.append("unknown audit records: " + ", ".join(sorted(extra)))
 
     if errors:
         print("Annual budget validation failed:", file=sys.stderr)
@@ -169,10 +179,10 @@ def main():
         return 1
 
     confirmed = sum(1 for record in records if record.get("auditStatus") == "CONFIRMED_PROJECT_BUDGET")
-    implicit_unresolved = len(project_ids) - len(seen_projects)
+    unresolved = len(records) - confirmed
     print(
-        f"Annual budget validation OK: {len(project_ids)} canonical projects, "
-        f"{confirmed} confirmed project budgets, {implicit_unresolved} projects using conservative default unresolved status, "
+        f"Annual budget validation OK: {len(project_ids)} canonical projects audited, "
+        f"{confirmed} confirmed project budgets, {unresolved} unresolved/withheld by audit controls, "
         f"schema {budgets.get('schemaVersion')}"
     )
     return 0
