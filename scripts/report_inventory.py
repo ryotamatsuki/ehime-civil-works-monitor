@@ -4,84 +4,93 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PROJECTS = json.loads((ROOT / "public/data/projects.json").read_text(encoding="utf-8"))["projects"]
-FEATURES = json.loads((ROOT / "public/data/projects.geojson").read_text(encoding="utf-8"))["features"]
-ENRICHMENT = json.loads((ROOT / "public/data/enrichment.json").read_text(encoding="utf-8"))["records"]
+PROJECTS = json.loads((ROOT / 'public/data/projects.json').read_text(encoding='utf-8'))['projects']
+FEATURES = json.loads((ROOT / 'public/data/projects.geojson').read_text(encoding='utf-8'))['features']
+ENRICHMENT = json.loads((ROOT / 'public/data/enrichment.json').read_text(encoding='utf-8'))['records']
+PHASE26 = json.loads((ROOT / 'public/data/phase26-inventory.json').read_text(encoding='utf-8'))
+RECONCILIATION = json.loads((ROOT / 'public/data/phase26-reconciliation.json').read_text(encoding='utf-8'))
 
 
 def has_nonempty_enrichment(record):
-    return any(record.get(key) for key in (
-        "annualBudgetHistory", "cumulativeInvestmentHistory", "benefitCostHistory", "documentedReasons"
-    ))
+    return any(record.get(key) for key in ('annualBudgetHistory', 'cumulativeInvestmentHistory', 'benefitCostHistory', 'documentedReasons'))
 
 
 def has_multi_history(project):
-    return any(len(project.get(key, [])) >= 2 for key in ("costHistory", "scheduleHistory", "progressHistory"))
+    return any(len(project.get(key, [])) >= 2 for key in ('costHistory', 'scheduleHistory', 'progressHistory'))
 
 
 def has_snapshot(project):
-    current_values = any(project.get(key) is not None for key in (
-        "startFiscalYear", "plannedCompletionFiscalYear", "totalProjectCostMillionYen",
-        "progressPercent", "landAcquisitionProgressPercent", "benefitCostRatio"
-    ))
-    any_history = any(bool(project.get(key, [])) for key in ("costHistory", "scheduleHistory", "progressHistory"))
-    return current_values or any_history
+    return any(project.get(key) is not None for key in (
+        'startFiscalYear', 'plannedCompletionFiscalYear', 'totalProjectCostMillionYen',
+        'progressPercent', 'landAcquisitionProgressPercent', 'benefitCostRatio'
+    )) or any(bool(project.get(key, [])) for key in ('costHistory', 'scheduleHistory', 'progressHistory'))
 
 
-enriched_ids = {record["projectId"] for record in ENRICHMENT if has_nonempty_enrichment(record)}
+enriched_ids = {record['projectId'] for record in ENRICHMENT if has_nonempty_enrichment(record)}
 levels = Counter()
 for project in PROJECTS:
-    if project["id"] in enriched_ids:
-        levels["enriched"] += 1
-    elif has_multi_history(project):
-        levels["history"] += 1
-    elif has_snapshot(project):
-        levels["snapshot"] += 1
-    else:
-        levels["inventory"] += 1
+    if project['id'] in enriched_ids: levels['enriched'] += 1
+    elif has_multi_history(project): levels['history'] += 1
+    elif has_snapshot(project): levels['snapshot'] += 1
+    else: levels['inventory'] += 1
 
-category_counts = Counter(project["category"] for project in PROJECTS)
-location_counts = Counter(project["locationAccuracy"] for project in PROJECTS)
-geometry_counts = Counter(feature["geometry"]["type"] for feature in FEATURES)
+excluded = {item['candidateId'] for item in RECONCILIATION['excludedExistingRoadIds']}
+new_roads = [row for row in PHASE26['roads'] if row[0] not in excluded] + RECONCILIATION['roadAdditions']
+new_sabo = PHASE26['sabo']
+new_count = len(new_roads) + len(new_sabo)
+levels['snapshot'] += new_count
 
-known_cost = sum(project["totalProjectCostMillionYen"] is not None for project in PROJECTS)
-known_completion = sum(project["plannedCompletionFiscalYear"] is not None for project in PROJECTS)
-known_progress = sum(project["progressPercent"] is not None for project in PROJECTS)
-cost_history = sum(bool(project.get("costHistory")) for project in PROJECTS)
-schedule_history = sum(bool(project.get("scheduleHistory")) for project in PROJECTS)
-progress_history = sum(bool(project.get("progressHistory")) for project in PROJECTS)
-multi_cost_history = sum(len(project.get("costHistory", [])) >= 2 for project in PROJECTS)
-multi_schedule_history = sum(len(project.get("scheduleHistory", [])) >= 2 for project in PROJECTS)
-multi_progress_history = sum(len(project.get("progressHistory", [])) >= 2 for project in PROJECTS)
-bc_projects = sum(bool(record.get("benefitCostHistory")) for record in ENRICHMENT)
-reason_projects = sum(bool(record.get("documentedReasons")) for record in ENRICHMENT)
-annual_budget_projects = sum(bool(record.get("annualBudgetHistory")) for record in ENRICHMENT)
-investment_projects = sum(bool(record.get("cumulativeInvestmentHistory")) for record in ENRICHMENT)
+category_counts = Counter(project['category'] for project in PROJECTS)
+category_counts['road'] += len(new_roads)
+category_counts['sabo'] += len(new_sabo)
+status_counts = Counter(project['status'] for project in PROJECTS)
+status_counts['under_construction'] += new_count
+location_counts = Counter(project['locationAccuracy'] for project in PROJECTS)
+location_counts['approximate'] += new_count
+geometry_counts = Counter(feature['geometry']['type'] for feature in FEATURES)
+geometry_counts['Point'] += new_count
+
+
+def covered(key):
+    return sum(project.get(key) is not None for project in PROJECTS)
+
 
 report = {
-    "projects": len(PROJECTS),
-    "geojsonFeatures": len(FEATURES),
-    "enrichmentRecords": len(ENRICHMENT),
-    "dataDepthExclusive": dict(sorted(levels.items())),
-    "historyPlus": levels["history"] + levels["enriched"],
-    "monitored": len(PROJECTS) - levels["inventory"],
-    "categories": dict(sorted(category_counts.items())),
-    "geometry": dict(sorted(geometry_counts.items())),
-    "locationAccuracy": dict(sorted(location_counts.items())),
-    "coverage": {
-        "knownTotalCost": known_cost,
-        "knownCompletionYear": known_completion,
-        "knownProgress": known_progress,
-        "costHistoryAny": cost_history,
-        "scheduleHistoryAny": schedule_history,
-        "progressHistoryAny": progress_history,
-        "costHistoryComparable": multi_cost_history,
-        "scheduleHistoryComparable": multi_schedule_history,
-        "progressHistoryComparable": multi_progress_history,
-        "annualBudget": annual_budget_projects,
-        "cumulativeInvestment": investment_projects,
-        "benefitCost": bc_projects,
-        "documentedReasons": reason_projects,
+    'projects': len(PROJECTS) + new_count,
+    'baseProjects': len(PROJECTS),
+    'phase26NewProjects': new_count,
+    'projectedGeojsonFeatures': len(FEATURES) + new_count,
+    'projectedEnrichmentRecords': len(ENRICHMENT) + new_count,
+    'status': dict(sorted(status_counts.items())),
+    'dataDepthExclusive': dict(sorted(levels.items())),
+    'historyPlus': levels['history'] + levels['enriched'],
+    'monitored': len(PROJECTS) + new_count - levels['inventory'],
+    'categories': dict(sorted(category_counts.items())),
+    'geometry': dict(sorted(geometry_counts.items())),
+    'locationAccuracy': dict(sorted(location_counts.items())),
+    'coverage': {
+        'knownTotalCost': covered('totalProjectCostMillionYen') + len(new_sabo),
+        'knownCompletionYear': covered('plannedCompletionFiscalYear') + sum(1 for row in new_roads if row[5] is not None) + len(new_sabo),
+        'knownProgress': covered('progressPercent') + len(new_sabo),
+    },
+    'phase26': {
+        'productionAdditions': {'road': len(new_roads), 'sabo': len(new_sabo), 'total': new_count},
+        'reconciledExistingCandidates': len(RECONCILIATION['excludedExistingRoadIds']),
+        'sourceFamilySaturation': {
+            'EhimeCivilWorks2024_2026': 'audited as discovery/reconciliation source',
+            'RoadProgramVol8': 'audited; production candidate table reconciled',
+            'LocalOffices': 'audited as discovery source; broader route/river labels withheld unless project scope independently confirmed',
+            'EvaluationR2_R7': 'audited; R7 second-meeting sabo cohort added; older cohorts used for reconciliation/history',
+            'EvaluationR8': 'meeting notice audited; detailed post-meeting result not used without published project-level result',
+            'R8BudgetInitialJuneSeptember': 'audited in Phase 2.5; program totals not allocated to projects',
+            'MLITShikoku': 'audited for major Ehime road projects and operator reconciliation',
+            'Procurement': 'audited for discovery only; contracts/work packages not canonicalized',
+        },
+        'remainingBlindSpots': [
+            'R8 public-works evaluation detailed result after the 2026-09-01 meeting',
+            'project-level identity behind local-office pages that list only broad route/river names',
+            'official GIS geometry for most projects',
+        ],
     },
 }
 print(json.dumps(report, ensure_ascii=False, indent=2))

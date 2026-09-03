@@ -1,0 +1,18 @@
+.phase26-summary {
+  margin: 1.4rem 0 2rem;
+  padding: 1.4rem;
+  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  border-radius: 16px;
+  display: grid;
+  gap: 1rem;
+}
+
+.phase26-summary h2 { margin: .2rem 0 0; }
+.phase26-summary > p { margin: 0; line-height: 1.7; max-width: 76rem; }
+.phase26-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; }
+.phase26-metrics span { border-top: 1px solid color-mix(in srgb, currentColor 24%, transparent); padding-top: .7rem; font-size: .72rem; letter-spacing: .06em; }
+.phase26-metrics strong { display: block; font-size: 1.55rem; letter-spacing: 0; margin-bottom: .2rem; }
+
+@media (max-width: 720px) {
+  .phase26-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
