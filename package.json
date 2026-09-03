@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "build": "vite build && node scripts/generate-detail-pages.mjs",
-    "validate": "python3 scripts/validate_data.py && python3 scripts/validate_enrichment.py && python3 scripts/validate_annual_budget.py && python3 scripts/validate_phase26.py",
+    "validate": "python3 scripts/validate_data.py && python3 scripts/validate_enrichment.py && python3 scripts/validate_annual_budget.py && python3 scripts/validate_phase26.py && python3 scripts/validate_phase27.py",
     "report:inventory": "python3 scripts/report_inventory.py",
     "report:budget": "python3 scripts/report_annual_budget.py",
     "check": "npm run lint && npm test && npm run validate && npm run report:inventory && npm run report:budget && npm run build"
