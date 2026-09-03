@@ -8,6 +8,7 @@ PROJECTS = json.loads((ROOT / 'public/data/projects.json').read_text(encoding='u
 FEATURES = json.loads((ROOT / 'public/data/projects.geojson').read_text(encoding='utf-8'))['features']
 ENRICHMENT = json.loads((ROOT / 'public/data/enrichment.json').read_text(encoding='utf-8'))['records']
 PHASE26 = json.loads((ROOT / 'public/data/phase26-inventory.json').read_text(encoding='utf-8'))
+RECONCILIATION = json.loads((ROOT / 'public/data/phase26-reconciliation.json').read_text(encoding='utf-8'))
 
 
 def has_nonempty_enrichment(record):
@@ -33,10 +34,10 @@ for project in PROJECTS:
     elif has_snapshot(project): levels['snapshot'] += 1
     else: levels['inventory'] += 1
 
-new_roads = PHASE26['roads']
+excluded = {item['candidateId'] for item in RECONCILIATION['excludedExistingRoadIds']}
+new_roads = [row for row in PHASE26['roads'] if row[0] not in excluded] + RECONCILIATION['roadAdditions']
 new_sabo = PHASE26['sabo']
 new_count = len(new_roads) + len(new_sabo)
-# All Phase 2.6 production additions carry at least an official start year, so they are Snapshot under current domain rules.
 levels['snapshot'] += new_count
 
 category_counts = Counter(project['category'] for project in PROJECTS)
@@ -49,7 +50,10 @@ location_counts['approximate'] += new_count
 geometry_counts = Counter(feature['geometry']['type'] for feature in FEATURES)
 geometry_counts['Point'] += new_count
 
-def covered(key): return sum(project.get(key) is not None for project in PROJECTS)
+
+def covered(key):
+    return sum(project.get(key) is not None for project in PROJECTS)
+
 
 report = {
     'projects': len(PROJECTS) + new_count,
@@ -71,6 +75,7 @@ report = {
     },
     'phase26': {
         'productionAdditions': {'road': len(new_roads), 'sabo': len(new_sabo), 'total': new_count},
+        'reconciledExistingCandidates': len(RECONCILIATION['excludedExistingRoadIds']),
         'sourceFamilySaturation': {
             'EhimeCivilWorks2024_2026': 'audited as discovery/reconciliation source',
             'RoadProgramVol8': 'audited; production candidate table reconciled',
