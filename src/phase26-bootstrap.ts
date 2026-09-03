@@ -1,5 +1,6 @@
+import type { FeatureCollection } from 'geojson';
 import { mergeAnnualBudget, mergeEnrichment, mergeGeoJson, mergeProjects, type Phase26Seed } from './phase26-data';
-import type { ProjectDataset } from './types';
+import type { ProjectCollection } from './types';
 import type { EnrichmentCollection } from './enrichment-types';
 import type { AnnualBudgetCollection } from './annual-budget-types';
 
@@ -25,8 +26,8 @@ window.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Res
   const seedTarget = pathname.endsWith('/data/phase26-inventory.json');
   if (seedTarget) return nativeFetch(input, init);
   const mergers: Record<string, (baseValue: unknown, seed: Phase26Seed) => unknown> = {
-    '/data/projects.json': (value, seed) => mergeProjects(value as ProjectDataset, seed),
-    '/data/projects.geojson': (value, seed) => mergeGeoJson(value as GeoJSON.FeatureCollection, seed),
+    '/data/projects.json': (value, seed) => mergeProjects(value as ProjectCollection, seed),
+    '/data/projects.geojson': (value, seed) => mergeGeoJson(value as FeatureCollection, seed),
     '/data/enrichment.json': (value, seed) => mergeEnrichment(value as EnrichmentCollection, seed),
     '/data/annual-budget-r5-r8.json': (value, seed) => mergeAnnualBudget(value as AnnualBudgetCollection, seed),
   };
