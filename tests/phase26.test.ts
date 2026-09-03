@@ -38,7 +38,7 @@ describe('Phase 2.6 comprehensive inventory', () => {
     const additions = phase26Projects(seed);
     expect(additions.some((project) => project.id === 'matsuyama-outer-airport-line')).toBe(false);
     expect(additions.some((project) => project.id === 'kamibun-mishima-mishima-chuo')).toBe(true);
-    expect(projects.projects.filter((project) => project.name.includes('一般国道56号 松山外環状道路空港線'))).toHaveLength(1);
+    expect(projects.projects.filter((project) => project.id === 'matsuyama-outer-ring-airport')).toHaveLength(1);
   });
 
   it('keeps the existing filter system usable at the expanded scale', () => {
